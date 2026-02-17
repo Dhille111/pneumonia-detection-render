@@ -1,12 +1,9 @@
 Flask>=2.2
 Pillow>=9.0
-torch>=2.0.0
-torchvision>=0.15.2
 tqdm>=4.65.0
 gunicorn>=20.1.0
-Flask>=2.2
-Pillow>=9.0
-torch==2.0.1
-torchvision>=0.15.2
-tqdm
-gunicorn>=20.1.0
+
+# CPU-only PyTorch (Render compatible)
+torch==2.1.0+cpu
+torchvision==0.16.0+cpu
+--extra-index-url https://download.pytorch.org/whl/cpu
