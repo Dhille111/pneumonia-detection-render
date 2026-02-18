@@ -99,13 +99,28 @@
       <button type="submit" class="btn btn-primary">Analyze X-ray</button>
     </form>
 
+    {% if error %}
+    <div class="alert alert-danger mt-4" role="alert">
+      ⚠️ {{ error }}
+    </div>
+    {% endif %}
+
     {% if prediction %}
     <div class="result-card mt-4">
-      <div class="result-label">🩺 Prediction: <span class="text-danger">{{ prediction }}</span></div>
-      {% if severity %}
-      <div class="severity">📊 Infection Level: {{ severity }}</div>
+      {% if prediction == "ERROR" %}
+        <div class="result-label" style="color: #d32f2f;">❌ Prediction Failed</div>
+        <p style="color: #d32f2f;">{{ error }}</p>
+      {% else %}
+        <div class="result-label">🩺 Prediction: 
+          <span class="{% if prediction == 'NORMAL' %}text-success{% else %}text-danger{% endif %}">
+            {{ prediction }}
+          </span>
+        </div>
+        {% if confidence %}
+        <div class="severity">📊 Confidence: {{ confidence }}</div>
+        {% endif %}
+        <img src="{{ img_path }}" class="img-fluid mt-3" style="max-width:400px;">
       {% endif %}
-      <img src="{{ img_path }}" class="img-fluid mt-3" style="max-width:400px;">
     </div>
     {% endif %}
   </div>

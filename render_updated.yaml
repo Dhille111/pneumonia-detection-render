@@ -1,0 +1,20 @@
+# Deployment Configuration for Render.com
+services:
+  - type: web
+    name: pneumonia-detection
+    runtime: python-3.11
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --workers 2 --worker-class sync --bind 0.0.0.0:$PORT --timeout 60
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11
+      - key: FLASK_ENV
+        value: production
+
+    # Optional: Add static file serving
+    staticDirs:
+      - path: /static
+        directory: static
+
+    # Health check
+    healthCheckPath: /health

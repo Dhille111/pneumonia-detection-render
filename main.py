@@ -11,7 +11,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"✅ Using device: {device}")
 
 
-data_dir = "dataset"
+data_dir = "chest_xray"
 
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
@@ -27,7 +27,7 @@ train_loader = DataLoader(train_data, batch_size=32, shuffle=True)
 val_loader = DataLoader(val_data, batch_size=32, shuffle=False)
 
 
-model = models.resnet18(pretrained=True)
+model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)  # Updated: use weights parameter
 for param in model.parameters():
     param.requires_grad = False  # Freeze layers
 
