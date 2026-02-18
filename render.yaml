@@ -1,9 +1,9 @@
 services:
   - type: web
     name: pneumonia-detection
-    runtime: python-3.11.9
-    buildCommand: pip install --upgrade pip && pip install --extra-index-url https://download.pytorch.org/whl/cpu -r requirements.txt
-    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    runtime: python-3.11
+    buildCommand: pip install --upgrade pip setuptools wheel && pip install -r requirements.txt
+    startCommand: gunicorn app:app --workers 2 --worker-class sync --bind 0.0.0.0:$PORT --timeout 60
     envVars:
-      - key: PYTHON_VERSION
-        value: 3.11.9
+      - key: FLASK_ENV
+        value: production

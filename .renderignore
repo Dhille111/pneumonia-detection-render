@@ -1,0 +1,16 @@
+# Render.com ignore patterns
+venv/
+__pycache__/
+*.pyc
+.git/
+.env
+.env.local
+*.pth
+chest_xray/
+dataset/
+.DS_Store
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+.coverage
