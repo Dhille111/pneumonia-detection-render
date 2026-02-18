@@ -4,6 +4,6 @@ Pillow>=9.0
 tqdm>=4.65.0
 gunicorn>=20.1.0
 
-# CPU-only PyTorch (Render compatible)
-torch==2.1.0+cpu
-torchvision==0.16.0+cpu
+# CPU-only PyTorch (use wheel available for Python 3.14 on Render)
+torch==2.10.0+cpu
+torchvision==0.15.2+cpu
