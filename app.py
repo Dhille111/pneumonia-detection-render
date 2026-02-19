@@ -4,6 +4,7 @@ import torch
 import torch.nn as nn
 from torchvision import models, transforms
 from flask import Flask, render_template, request, redirect, jsonify
+from flask_cors import CORS
 from PIL import Image
 from werkzeug.utils import secure_filename
 import io
@@ -16,7 +17,8 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # -------------------- App setup --------------------
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', static_url_path='/static')
+CORS(app)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "uploads")
