@@ -1,8 +1,7 @@
 import os
 import logging
-import torch
-import torch.nn as nn
-from torchvision import models, transforms
+import numpy as np
+import onnxruntime as ort
 from flask import Flask, render_template, request, redirect, jsonify
 from PIL import Image
 from werkzeug.utils import secure_filename
@@ -26,43 +25,43 @@ app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16MB max file size
 
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "bmp", "webp"}
 
-# -------------------- Device (CPU only for Render) --------------------
-device = torch.device("cpu")
+# -------------------- Load ONNX model --------------------
+MODEL_PATH = os.path.join(BASE_DIR, "pneumonia_model.onnx")
 
-# -------------------- Load model --------------------
-MODEL_PATH = os.path.join(BASE_DIR, "pneumonia_model.pth")
-
-model = None
+ort_session = None
 try:
-    model = models.resnet18(weights=None)  # Updated: use weights parameter
-    num_ftrs = model.fc.in_features
-    model.fc = nn.Linear(num_ftrs, 2)
-    
     if not os.path.exists(MODEL_PATH):
-        logger.error(f"Model file not found at {MODEL_PATH}")
-        raise FileNotFoundError(f"Model file not found: {MODEL_PATH}")
+        logger.error(f"ONNX Model file not found at {MODEL_PATH}")
+        raise FileNotFoundError(f"ONNX Model file not found: {MODEL_PATH}")
     
-    model.load_state_dict(torch.load(MODEL_PATH, map_location="cpu"))
-    model.to(device)
-    model.eval()
-    logger.info("Model loaded successfully")
+    # Load the ONNX model using CPU execution provider
+    ort_session = ort.InferenceSession(MODEL_PATH, providers=['CPUExecutionProvider'])
+    logger.info("ONNX Model loaded successfully")
 except Exception as e:
-    logger.error(f"Error loading model: {str(e)}")
-    model = None
-
-# -------------------- Image transforms --------------------
-transform = transforms.Compose([
-    transforms.Resize((224, 224)),
-    transforms.ToTensor(),
-    transforms.Normalize(
-        mean=[0.485, 0.456, 0.406],
-        std=[0.229, 0.224, 0.225]
-    )
-])
+    logger.error(f"Error loading ONNX model: {str(e)}")
+    ort_session = None
 
 def allowed_file(filename):
     """Check if file extension is allowed"""
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def preprocess_image(filepath):
+    """Load and preprocess image using numpy and PIL (no PyTorch dependencies)"""
+    # 1. Load image and convert to RGB
+    image = Image.open(filepath).convert("RGB")
+    # 2. Resize to 224x224 using Bilinear interpolation matching torchvision transforms.Resize
+    image = image.resize((224, 224), Image.BILINEAR)
+    # 3. Convert to np array and scale to [0, 1]
+    img_data = np.array(image).astype(np.float32) / 255.0
+    # 4. Transpose from HWC to CHW
+    img_data = np.transpose(img_data, (2, 0, 1))
+    # 5. Normalize using ImageNet mean & std values
+    mean = np.array([0.485, 0.456, 0.406], dtype=np.float32).reshape(3, 1, 1)
+    std = np.array([0.229, 0.224, 0.225], dtype=np.float32).reshape(3, 1, 1)
+    img_data = (img_data - mean) / std
+    # 6. Add batch dimension [1, 3, 224, 224]
+    img_data = np.expand_dims(img_data, axis=0)
+    return img_data
 
 # -------------------- Routes --------------------
 @app.route("/")
@@ -72,14 +71,14 @@ def index():
 @app.route("/health")
 def health():
     """Health check endpoint for deployment monitoring"""
-    return jsonify({"status": "ok", "model_loaded": model is not None}), 200
+    return jsonify({"status": "ok", "model_loaded": ort_session is not None}), 200
 
 @app.route("/predict", methods=["POST"])
 def predict():
-    """Process image and make prediction"""
+    """Process image and make prediction using ONNX Runtime"""
     try:
-        if model is None:
-            logger.error("Model not loaded")
+        if ort_session is None:
+            logger.error("ONNX model session not loaded")
             return render_template(
                 "index.html",
                 prediction="ERROR",
@@ -117,19 +116,22 @@ def predict():
         file.save(filepath)
         logger.info(f"File uploaded: {filename}")
 
-        # Load and process image
-        image = Image.open(filepath).convert("RGB")
-        img_tensor = transform(image).unsqueeze(0).to(device)
+        # Load and preprocess image using pure NumPy and Pillow
+        img_np = preprocess_image(filepath)
 
-        # Make prediction
-        with torch.no_grad():
-            outputs = model(img_tensor)
-            probabilities = torch.nn.functional.softmax(outputs, dim=1)
-            _, preds = torch.max(outputs, 1)
-            confidence = probabilities[0][preds.item()].item() * 100
-            
-            classes = ["NORMAL", "PNEUMONIA"]
-            result = classes[preds.item()]
+        # Make prediction using ONNX runtime
+        inputs = {ort_session.get_inputs()[0].name: img_np}
+        outputs = ort_session.run(None, inputs)
+        logits = outputs[0]
+
+        # Calculate softmax probabilities and prediction in NumPy
+        exp_logits = np.exp(logits - np.max(logits, axis=1, keepdims=True))
+        probabilities = exp_logits / np.sum(exp_logits, axis=1, keepdims=True)
+        pred_idx = np.argmax(probabilities[0])
+        confidence = probabilities[0][pred_idx] * 100
+        
+        classes = ["NORMAL", "PNEUMONIA"]
+        result = classes[pred_idx]
 
         logger.info(f"Prediction: {result} (Confidence: {confidence:.2f}%)")
         
@@ -159,6 +161,4 @@ def internal_error(error):
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    # Note: In production, use Gunicorn with high timeout value
-    # gunicorn app:app --timeout 120 --keep-alive 75
     app.run(host="0.0.0.0", port=port, debug=False, threaded=True)
