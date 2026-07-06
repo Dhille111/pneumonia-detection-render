@@ -291,6 +291,7 @@ def generate_report():
         
         # Report Metadata Header block
         report_date = datetime.now().strftime("%Y-%m-%d %H:%M")
+        case_id = f"PX-{uuid.uuid4().hex[:8].upper()}"
         study_uid = f"1.2.840.113619.2.{uuid.uuid4().hex[:12].upper()}"
         accession_no = f"ACC-{uuid.uuid4().hex[:6].upper()}"
         

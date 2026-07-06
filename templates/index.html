@@ -68,14 +68,11 @@
   <aside class="w-60 bg-white border-r border-pacs-border flex flex-col justify-between flex-shrink-0 z-20">
     <div class="flex flex-col gap-6">
       
-      <!-- Brand Logo (Custom Vector Lungs matching Mockup exactly) -->
+      <!-- Brand Logo -->
       <div class="px-5 py-4 flex items-center gap-2">
         <svg class="w-8 h-8 flex-shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Left Lobe -->
           <path d="M11 4.5c0-.8-.7-1.3-1.4-.8C7.5 5.2 5.5 7.5 5.5 10c0 3.2 2.2 5.5 4.7 5.5.4 0 .8-.3.8-.7V4.5z" fill="#0284c7"/>
-          <!-- Right Lobe -->
           <path d="M13 4.5c0-.8.7-1.3 1.4-.8C16.5 5.2 18.5 7.5 18.5 10c0 3.2-2.2 5.5-4.7 5.5-.4 0-.8-.3-.8-.7V4.5z" fill="#0ea5e9" opacity="0.85"/>
-          <!-- Trachea -->
           <path d="M12 11V15c0 .3-.2.5-.5.5h-1c-.3 0-.5-.2-.5-.5V11" stroke="#0284c7" stroke-width="1.2" stroke-linecap="round"/>
         </svg>
         <div>
@@ -86,30 +83,30 @@
 
       <!-- Navigation Links -->
       <nav class="px-3 flex flex-col gap-1 text-xs font-semibold">
-        <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150">
+        <button id="nav-dashboard" onclick="showScreen('dashboard')" class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150 w-full text-left">
           <i data-lucide="layout-grid" class="w-4 h-4"></i> Dashboard
-        </a>
-        <a href="#" class="flex items-center gap-3 px-3 py-2.5 bg-[#eaf5f2] text-[#0e7490] border-l-4 border-l-[#0e7490] rounded-r-lg transition-all duration-150">
+        </button>
+        <button id="nav-worklist" onclick="showScreen('worklist')" class="flex items-center gap-3 px-3 py-2.5 bg-[#eaf5f2] text-[#0e7490] border-l-4 border-l-[#0e7490] rounded-r-lg transition-all duration-150 w-full text-left">
           <i data-lucide="clipboard-list" class="w-4 h-4"></i> Study Worklist
-        </a>
-        <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150">
+        </button>
+        <button id="nav-screening" onclick="showScreen('screening')" class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150 w-full text-left">
           <i data-lucide="scan-eye" class="w-4 h-4"></i> AI Screening
-        </a>
-        <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150">
+        </button>
+        <button id="nav-reports" onclick="showScreen('reports')" class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150 w-full text-left">
           <i data-lucide="files" class="w-4 h-4"></i> Reports
-        </a>
-        <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150">
+        </button>
+        <button id="nav-patients" onclick="showScreen('patients')" class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150 w-full text-left">
           <i data-lucide="users" class="w-4 h-4"></i> Patients
-        </a>
-        <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150">
+        </button>
+        <button id="nav-analytics" onclick="showScreen('analytics')" class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150 w-full text-left">
           <i data-lucide="bar-chart-3" class="w-4 h-4"></i> Analytics
-        </a>
-        <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150">
+        </button>
+        <button id="nav-settings" onclick="showScreen('settings')" class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150 w-full text-left">
           <i data-lucide="settings" class="w-4 h-4"></i> Settings
-        </a>
-        <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150">
+        </button>
+        <button id="nav-systemlogs" onclick="showScreen('systemlogs')" class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150 w-full text-left">
           <i data-lucide="database" class="w-4 h-4"></i> System Logs
-        </a>
+        </button>
       </nav>
     </div>
 
@@ -156,338 +153,791 @@
       </div>
     </header>
 
-    <!-- COLUMN BODY GRID -->
-    <div class="flex-grow flex p-6 gap-6 overflow-hidden">
+    <!-- CONTAINER FOR SCREENS -->
+    <div class="flex-grow flex overflow-hidden relative">
 
-      <!-- COLUMN 2: PATIENT STUDY WORKLIST -->
-      <section class="w-80 bg-white border border-pacs-border rounded-xl flex flex-col overflow-hidden shadow-sm flex-shrink-0">
-        
-        <!-- List Header -->
-        <div class="px-4 py-3 border-b border-slate-100 flex flex-col">
-          <span class="text-xs font-bold text-slate-800">Patient Study Worklist</span>
-          <span class="text-[10px] text-slate-400 font-semibold mt-0.5">DX Radiographs</span>
+      <!-- SCREEN 1: DASHBOARD PORTAL -->
+      <div id="screen-dashboard" class="hidden absolute inset-0 p-6 flex flex-col gap-6 overflow-y-auto">
+        <div class="flex flex-col">
+          <h2 class="text-lg font-bold text-slate-800">Radiology Department Diagnostic Hub</h2>
+          <p class="text-xs text-slate-400 mt-0.5">Real-time status overview of active DICOM streams and classification rates.</p>
         </div>
 
-        <!-- Ingest loader drag-box -->
-        <form action="/predict" method="POST" enctype="multipart/form-data" class="px-4 py-3">
-          <label class="group border border-dashed border-slate-300 hover:border-[#0e7490] rounded-lg p-5 flex flex-col items-center justify-center cursor-pointer transition-all duration-150 bg-slate-50/50 hover:bg-[#eef8f6]/30">
-            <input type="file" name="file" class="hidden" required onchange="this.form.submit()">
-            <i data-lucide="upload-cloud" class="w-5 h-5 text-slate-400 group-hover:text-[#0e7490] mb-1 transition-colors duration-150"></i>
-            <span class="text-xs font-bold text-slate-700 group-hover:text-[#0e7490] transition-colors duration-150">Ingest Patient Study File</span>
-            <span class="text-[9px] text-slate-400 mt-0.5">JPEG, PNG, WebP (Max 16MB)</span>
-          </label>
-        </form>
+        <!-- Metrics cards row -->
+        <div class="grid grid-cols-4 gap-6">
+          <div class="bg-white border border-pacs-border rounded-xl p-5 shadow-sm flex flex-col gap-1">
+            <span class="text-slate-400 text-[10px] uppercase font-bold tracking-wider">Total Ingested Cases</span>
+            <span class="font-sans font-extrabold text-2xl text-slate-800">624</span>
+            <span class="text-[9px] text-slate-500 mt-1">From local radiology archives</span>
+          </div>
+          <div class="bg-white border border-pacs-border rounded-xl p-5 shadow-sm flex flex-col gap-1">
+            <span class="text-slate-400 text-[10px] uppercase font-bold tracking-wider">AI Flags (Pneumonia)</span>
+            <span class="font-sans font-extrabold text-2xl text-pacs-error">390</span>
+            <span class="text-[9px] text-slate-500 mt-1">Requiring immediate clinician review</span>
+          </div>
+          <div class="bg-white border border-pacs-border rounded-xl p-5 shadow-sm flex flex-col gap-1">
+            <span class="text-slate-400 text-[10px] uppercase font-bold tracking-wider">Scans Cleared (Normal)</span>
+            <span class="font-sans font-extrabold text-2xl text-pacs-success">234</span>
+            <span class="text-[9px] text-slate-500 mt-1">Zero diagnostic indicators flagged</span>
+          </div>
+          <div class="bg-white border border-pacs-border rounded-xl p-5 shadow-sm flex flex-col gap-1">
+            <span class="text-slate-400 text-[10px] uppercase font-bold tracking-wider">System CPU Load</span>
+            <span class="font-sans font-extrabold text-2xl text-pacs-accent">12.4%</span>
+            <span class="text-[9px] text-slate-500 mt-1">ONNX Runtime Thread Pool</span>
+          </div>
+        </div>
 
-        <!-- Patient Roster List -->
-        <div class="flex-grow overflow-y-auto px-4 pb-4 flex flex-col gap-2.5">
+        <!-- Ingested Feed Table -->
+        <div class="bg-white border border-pacs-border rounded-xl shadow-sm overflow-hidden">
+          <div class="px-4 py-3 bg-slate-50/50 border-b border-slate-100 flex justify-between items-center">
+            <span class="text-xs font-bold text-slate-800">Recent Diagnostic Intake Feed</span>
+            <span class="text-[10px] text-slate-400 font-semibold font-mono">Gateway Node Connected</span>
+          </div>
+          <table class="w-full text-left text-xs text-slate-600">
+            <thead class="bg-slate-50 text-[10px] text-slate-400 uppercase font-mono tracking-wider border-b border-slate-200 select-none">
+              <tr>
+                <th class="p-3">Case ID</th>
+                <th class="p-3">Patient</th>
+                <th class="p-3">Study Date</th>
+                <th class="p-3">Modality</th>
+                <th class="p-3">AI Outcome</th>
+                <th class="p-3 text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 font-medium">
+              <tr>
+                <td class="p-3 font-mono text-slate-400">PX-8041A</td>
+                <td class="p-3 text-slate-800">Patient Case Normal</td>
+                <td class="p-3">2026-07-06</td>
+                <td class="p-3">DX (PA)</td>
+                <td class="p-3">
+                  <span class="px-2 py-0.5 rounded text-[10px] bg-pacs-successBg border border-pacs-successBorder text-pacs-success">NORMAL</span>
+                </td>
+                <td class="p-3 text-right">
+                  <button onclick="loadPatientStudy('normal')" class="text-[#0e7490] hover:underline font-bold">Load in Viewer</button>
+                </td>
+              </tr>
+              <tr>
+                <td class="p-3 font-mono text-slate-400">PX-4752B</td>
+                <td class="p-3 text-slate-800">Patient Case Pneumonia</td>
+                <td class="p-3">2026-07-06</td>
+                <td class="p-3">DX (PA)</td>
+                <td class="p-3">
+                  <span class="px-2 py-0.5 rounded text-[10px] bg-pacs-errorBg border border-pacs-errorBorder text-pacs-error">PNEUMONIA</span>
+                </td>
+                <td class="p-3 text-right">
+                  <button onclick="loadPatientStudy('pneumonia')" class="text-[#0e7490] hover:underline font-bold">Load in Viewer</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SCREEN 2: STUDY WORKLIST (Active PACS viewer workspace) -->
+      <div id="screen-worklist" class="absolute inset-0 p-6 flex gap-6 overflow-hidden">
+        
+        <!-- COLUMN 2: PATIENT STUDY WORKLIST -->
+        <section class="w-80 bg-white border border-pacs-border rounded-xl flex flex-col overflow-hidden shadow-sm flex-shrink-0">
           
-          <!-- preset 1: Normal -->
-          <form action="/predict" method="POST">
-            <input type="hidden" name="sample_name" value="normal">
-            <button type="submit" class="w-full text-left p-3.5 rounded-lg border transition-all duration-150 flex flex-col gap-1.5 border-l-4 {% if prediction and 'normal' in img_path %}border-l-[#0e7490] bg-[#eef8f6]/40 border-[#0e7490]/40 shadow-sm{% else %}border-slate-200 bg-white hover:bg-slate-50/50 border-l-transparent{% endif %} group">
-              <div class="flex items-center justify-between w-full font-mono text-[9px] text-slate-400 font-medium">
-                <span>PX-8041A</span>
-                <span class="px-1.5 py-0.2 bg-slate-100 text-slate-500 rounded font-semibold text-[8px]">DX-RAD</span>
-              </div>
-              <div class="text-xs font-bold text-slate-800 group-hover:text-[#0e7490] transition-colors duration-150">Patient: Case Normal</div>
-              <div class="flex items-center justify-between w-full text-[10px] text-slate-500 font-medium">
-                <span>DOB: 1981-11-12</span>
-                <span class="flex items-center gap-1 text-blue-600 font-bold">
-                  <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span> Unread
-                </span>
-              </div>
-            </button>
+          <!-- List Header -->
+          <div class="px-4 py-3 border-b border-slate-100 flex flex-col">
+            <span class="text-xs font-bold text-slate-800">Patient Study Worklist</span>
+            <span class="text-[10px] text-slate-400 font-semibold mt-0.5">DX Radiographs</span>
+          </div>
+
+          <!-- Ingest loader drag-box -->
+          <form action="/predict" method="POST" enctype="multipart/form-data" class="px-4 py-3">
+            <label class="group border border-dashed border-slate-300 hover:border-[#0e7490] rounded-lg p-5 flex flex-col items-center justify-center cursor-pointer transition-all duration-150 bg-slate-50/50 hover:bg-[#eef8f6]/30">
+              <input type="file" name="file" class="hidden" required onchange="this.form.submit()">
+              <i data-lucide="upload-cloud" class="w-5 h-5 text-slate-400 group-hover:text-[#0e7490] mb-1 transition-colors duration-150"></i>
+              <span class="text-xs font-bold text-slate-700 group-hover:text-[#0e7490] transition-colors duration-150">Ingest Patient Study File</span>
+              <span class="text-[9px] text-slate-400 mt-0.5">JPEG, PNG, WebP (Max 16MB)</span>
+            </label>
           </form>
 
-          <!-- preset 2: Pneumonia -->
-          <form action="/predict" method="POST">
-            <input type="hidden" name="sample_name" value="pneumonia">
-            <button type="submit" class="w-full text-left p-3.5 rounded-lg border transition-all duration-150 flex flex-col gap-1.5 border-l-4 {% if prediction and 'pneumonia' in img_path %}border-l-[#0e7490] bg-[#eef8f6]/40 border-[#0e7490]/40 shadow-sm{% else %}border-slate-200 bg-white hover:bg-slate-50/50 border-l-transparent{% endif %} group">
-              <div class="flex items-center justify-between w-full font-mono text-[9px] text-slate-400 font-medium">
-                <span>PX-4752B</span>
+          <!-- Patient Roster List -->
+          <div class="flex-grow overflow-y-auto px-4 pb-4 flex flex-col gap-2.5">
+            
+            <!-- preset 1: Normal -->
+            <form action="/predict" method="POST">
+              <input type="hidden" name="sample_name" value="normal">
+              <button type="submit" class="w-full text-left p-3.5 rounded-lg border transition-all duration-150 flex flex-col gap-1.5 border-l-4 {% if prediction and 'normal' in img_path %}border-l-[#0e7490] bg-[#eef8f6]/40 border-[#0e7490]/40 shadow-sm{% else %}border-slate-200 bg-white hover:bg-slate-50/50 border-l-transparent{% endif %} group">
+                <div class="flex items-center justify-between w-full font-mono text-[9px] text-slate-400 font-medium">
+                  <span>PX-8041A</span>
+                  <span class="px-1.5 py-0.2 bg-slate-100 text-slate-500 rounded font-semibold text-[8px]">DX-RAD</span>
+                </div>
+                <div class="text-xs font-bold text-slate-800 group-hover:text-[#0e7490] transition-colors duration-150">Patient: Case Normal</div>
+                <div class="flex items-center justify-between w-full text-[10px] text-slate-500 font-medium">
+                  <span>DOB: 1981-11-12</span>
+                  <span class="flex items-center gap-1 text-blue-600 font-bold">
+                    <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span> Unread
+                  </span>
+                </div>
+              </button>
+            </form>
+
+            <!-- preset 2: Pneumonia -->
+            <form action="/predict" method="POST">
+              <input type="hidden" name="sample_name" value="pneumonia">
+              <button type="submit" class="w-full text-left p-3.5 rounded-lg border transition-all duration-150 flex flex-col gap-1.5 border-l-4 {% if prediction and 'pneumonia' in img_path %}border-l-[#0e7490] bg-[#eef8f6]/40 border-[#0e7490]/40 shadow-sm{% else %}border-slate-200 bg-white hover:bg-slate-50/50 border-l-transparent{% endif %} group">
+                <div class="flex items-center justify-between w-full font-mono text-[9px] text-slate-400 font-medium">
+                  <span>PX-4752B</span>
+                  <span class="px-1.5 py-0.2 bg-slate-100 text-slate-500 rounded font-semibold text-[8px]">DX-RAD</span>
+                </div>
+                <div class="text-xs font-bold text-slate-800 group-hover:text-[#0e7490] transition-colors duration-150">Patient: Case Pneumonia</div>
+                <div class="flex items-center justify-between w-full text-[10px] text-slate-500 font-medium">
+                  <span>DOB: 1974-05-18</span>
+                  <span class="flex items-center gap-1 text-blue-600 font-bold">
+                    <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span> Unread
+                  </span>
+                </div>
+              </button>
+            </form>
+
+            <!-- mock Sarah Jenkins -->
+            <div class="p-3.5 rounded-lg border border-slate-100 bg-white opacity-50 flex flex-col gap-1.5 text-xs">
+              <div class="flex justify-between w-full font-mono text-[9px] text-slate-400 font-medium">
+                <span>PX-1284C</span>
                 <span class="px-1.5 py-0.2 bg-slate-100 text-slate-500 rounded font-semibold text-[8px]">DX-RAD</span>
               </div>
-              <div class="text-xs font-bold text-slate-800 group-hover:text-[#0e7490] transition-colors duration-150">Patient: Case Pneumonia</div>
-              <div class="flex items-center justify-between w-full text-[10px] text-slate-500 font-medium">
-                <span>DOB: 1974-05-18</span>
-                <span class="flex items-center gap-1 text-blue-600 font-bold">
-                  <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span> Unread
+              <div class="font-bold text-slate-700">Patient: Sarah Jenkins</div>
+              <div class="flex justify-between w-full text-[10px] text-slate-400 font-medium">
+                <span>DOB: 1993-02-28</span>
+                <span class="flex items-center gap-1 text-green-700 font-semibold">
+                  <span class="w-1.5 h-1.5 rounded-full bg-green-600"></span> Completed
                 </span>
               </div>
-            </button>
-          </form>
-
-          <!-- mock Sarah Jenkins -->
-          <div class="p-3.5 rounded-lg border border-slate-100 bg-white opacity-50 flex flex-col gap-1.5 text-xs">
-            <div class="flex justify-between w-full font-mono text-[9px] text-slate-400 font-medium">
-              <span>PX-1284C</span>
-              <span class="px-1.5 py-0.2 bg-slate-100 text-slate-500 rounded font-semibold text-[8px]">DX-RAD</span>
             </div>
-            <div class="font-bold text-slate-700">Patient: Sarah Jenkins</div>
-            <div class="flex justify-between w-full text-[10px] text-slate-400 font-medium">
-              <span>DOB: 1993-02-28</span>
-              <span class="flex items-center gap-1 text-green-700 font-semibold">
-                <span class="w-1.5 h-1.5 rounded-full bg-green-600"></span> Completed
-              </span>
-            </div>
-          </div>
 
-          <!-- mock Robert Martinez -->
-          <div class="p-3.5 rounded-lg border border-slate-100 bg-white opacity-50 flex flex-col gap-1.5 text-xs">
-            <div class="flex justify-between w-full font-mono text-[9px] text-slate-400 font-medium">
-              <span>PX-9051D</span>
-              <span class="px-1.5 py-0.2 bg-slate-100 text-slate-500 rounded font-semibold text-[8px]">DX-RAD</span>
-            </div>
-            <div class="font-bold text-slate-700">Patient: Robert Martinez</div>
-            <div class="flex justify-between w-full text-[10px] text-slate-400 font-medium">
-              <span>DOB: 1968-09-04</span>
-              <span class="flex items-center gap-1 text-green-700 font-semibold">
-                <span class="w-1.5 h-1.5 rounded-full bg-green-600"></span> Completed
-              </span>
-            </div>
-          </div>
-
-        </div>
-        
-        <!-- Stats footer -->
-        <div class="p-4 border-t border-slate-100 bg-slate-50 font-mono text-[10px] text-slate-500 flex flex-col gap-1.5">
-          <div class="flex justify-between"><span>AI Inference Engine</span><span class="text-slate-800 font-bold">ONNX Runtime (CPU)</span></div>
-          <div class="flex justify-between"><span>Verified Accuracy</span><span class="text-blue-600 font-bold">82.05% (512/624)</span></div>
-          <div class="flex justify-between"><span>Mean Latency</span><span class="text-green-700 font-bold">< 100ms</span></div>
-        </div>
-      </section>
-
-      <!-- COLUMN 3: DIAGNOSTIC IMAGE VIEWER -->
-      <section class="flex-grow bg-white border border-pacs-border rounded-xl flex flex-col overflow-hidden shadow-sm">
-        
-        <!-- Viewport Toolbar -->
-        <div class="h-12 border-b border-slate-100 px-4 flex items-center justify-between text-xs font-semibold text-slate-600 select-none flex-shrink-0">
-          <span>Diagnostic Image Viewer</span>
-          
-          <!-- Control Buttons (Standard gray outlines matching mockup) -->
-          <div class="flex items-center gap-1.5">
-            <button onclick="toggleInvert()" class="px-3 py-1 bg-white hover:bg-slate-50 border border-slate-300 rounded text-slate-700 flex items-center gap-1.5 font-bold transition-all shadow-sm">
-              <i data-lucide="eye" class="w-3.5 h-3.5"></i> Invert
-            </button>
-            <button onclick="toggleFlip()" class="px-3 py-1 bg-white hover:bg-slate-50 border border-slate-300 rounded text-slate-700 flex items-center gap-1.5 font-bold transition-all shadow-sm">
-              <i data-lucide="flip-horizontal" class="w-3.5 h-3.5"></i> Flip
-            </button>
-            <button onclick="rotateImage()" class="px-3 py-1 bg-white hover:bg-slate-50 border border-slate-300 rounded text-slate-700 flex items-center gap-1.5 font-bold transition-all shadow-sm">
-              <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i> Rotate
-            </button>
-            <button onclick="toggleAnnotations()" class="px-3 py-1 bg-white hover:bg-slate-50 border border-slate-300 rounded text-slate-700 flex items-center gap-1.5 font-bold transition-all shadow-sm">
-              <i data-lucide="info" class="w-3.5 h-3.5"></i> Overlays
-            </button>
-            <button onclick="resetImage()" class="px-3 py-1 bg-white hover:bg-slate-50 border border-slate-300 rounded text-slate-700 flex items-center gap-1.5 font-bold transition-all shadow-sm">
-              <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Reset
-            </button>
-            <div class="h-4 w-px bg-slate-300 mx-1"></div>
-            <button class="p-1.5 bg-white hover:bg-slate-50 border border-slate-300 rounded text-slate-700 shadow-sm flex items-center justify-center">
-              <i data-lucide="more-vertical" class="w-4 h-4"></i>
-            </button>
-          </div>
-        </div>
-
-        <!-- Black Canvas Viewport Area -->
-        <div class="flex-grow bg-[#090b10] flex items-center justify-center p-6 relative overflow-hidden">
-          
-          {% if prediction %}
-            <div class="relative w-full h-full max-w-[480px] max-h-[480px] bg-black flex items-center justify-center border border-slate-900 shadow-2xl">
-              <img id="viewport-image" src="{{ img_path }}" class="pacs-image max-w-full max-h-full object-contain" alt="Radiograph scan">
-              
-              <!-- Corner HUD text overlays -->
-              <div id="dicom-overlays" class="absolute inset-0 p-4 font-mono text-[10px] text-cyan-400 opacity-90 tracking-tight pointer-events-none flex flex-col justify-between z-10">
-                <!-- Upper corner values -->
-                <div class="flex justify-between w-full">
-                  <div>
-                    <div>ID: PX-{{ img_path.split('_')[-1].split('.')[0].upper() }}</div>
-                    <div>Modality: DX</div>
-                    <div>DOB: 1981-11-12</div>
-                  </div>
-                  <div class="text-right">
-                    <div>AI Diagnostic Imaging Lab</div>
-                    <div>Acc: {{ img_path.split('/')[-1][:12] }}</div>
-                    <div>Date: 2026-07-06</div>
-                  </div>
-                </div>
-
-                <!-- Orientation Labels -->
-                <div class="flex justify-between items-center w-full px-6 flex-grow">
-                  <div class="text-xs font-bold opacity-50">L</div>
-                  <div class="text-xs font-bold opacity-50">R</div>
-                </div>
-
-                <!-- Lower corner values -->
-                <div class="flex justify-between w-full">
-                  <div>
-                    <div>Im: 1 / 1</div>
-                    <div>KVP: 120.0</div>
-                    <div>Filters: Pillow Bilinear</div>
-                  </div>
-                  <div class="text-right">
-                    <div>Zoom: 100%</div>
-                    <div>WL: 127 / WW: 256</div>
-                    <div>Model: ResNet-18-ONNX</div>
-                  </div>
-                </div>
+            <!-- mock Robert Martinez -->
+            <div class="p-3.5 rounded-lg border border-slate-100 bg-white opacity-50 flex flex-col gap-1.5 text-xs">
+              <div class="flex justify-between w-full font-mono text-[9px] text-slate-400 font-medium">
+                <span>PX-9051D</span>
+                <span class="px-1.5 py-0.2 bg-slate-100 text-slate-500 rounded font-semibold text-[8px]">DX-RAD</span>
+              </div>
+              <div class="font-bold text-slate-700">Patient: Robert Martinez</div>
+              <div class="flex justify-between w-full text-[10px] text-slate-400 font-medium">
+                <span>DOB: 1968-09-04</span>
+                <span class="flex items-center gap-1 text-green-700 font-semibold">
+                  <span class="w-1.5 h-1.5 rounded-full bg-green-600"></span> Completed
+                </span>
               </div>
             </div>
-          {% else %}
-            <!-- Welcome port -->
-            <div class="text-center font-mono text-slate-500 flex flex-col items-center gap-3">
-              <i data-lucide="scan" class="w-10 h-10 text-slate-600 animate-pulse"></i>
-              <div class="text-xs uppercase tracking-wider font-bold text-slate-400">Diagnostic Viewport Inactive</div>
-              <div class="text-[10px] text-slate-600 max-w-xs leading-relaxed">Select a study case from the worklist or upload a new patient radiograph file to trigger AI analysis.</div>
+
+          </div>
+          
+          <!-- Stats footer -->
+          <div class="p-4 border-t border-slate-100 bg-slate-50 font-mono text-[10px] text-slate-500 flex flex-col gap-1.5">
+            <div class="flex justify-between"><span>AI Inference Engine</span><span class="text-slate-800 font-bold">ONNX Runtime (CPU)</span></div>
+            <div class="flex justify-between"><span>Verified Accuracy</span><span class="text-blue-600 font-bold">82.05% (512/624)</span></div>
+            <div class="flex justify-between"><span>Mean Latency</span><span class="text-green-700 font-bold">< 100ms</span></div>
+          </div>
+        </section>
+
+        <!-- COLUMN 3: DIAGNOSTIC IMAGE VIEWER -->
+        <section class="flex-grow bg-white border border-pacs-border rounded-xl flex flex-col overflow-hidden shadow-sm">
+          
+          <!-- Viewport Toolbar -->
+          <div class="h-12 border-b border-slate-100 px-4 flex items-center justify-between text-xs font-semibold text-slate-600 select-none flex-shrink-0">
+            <span>Diagnostic Image Viewer</span>
+            
+            <!-- Control Buttons (Standard gray outlines matching mockup) -->
+            <div class="flex items-center gap-1.5">
+              <button onclick="toggleInvert()" class="px-3 py-1 bg-white hover:bg-slate-50 border border-slate-300 rounded text-slate-700 flex items-center gap-1.5 font-bold transition-all shadow-sm">
+                <i data-lucide="eye" class="w-3.5 h-3.5"></i> Invert
+              </button>
+              <button onclick="toggleFlip()" class="px-3 py-1 bg-white hover:bg-slate-50 border border-slate-300 rounded text-slate-700 flex items-center gap-1.5 font-bold transition-all shadow-sm">
+                <i data-lucide="flip-horizontal" class="w-3.5 h-3.5"></i> Flip
+              </button>
+              <button onclick="rotateImage()" class="px-3 py-1 bg-white hover:bg-slate-50 border border-slate-300 rounded text-slate-700 flex items-center gap-1.5 font-bold transition-all shadow-sm">
+                <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i> Rotate
+              </button>
+              <button onclick="toggleAnnotations()" class="px-3 py-1 bg-white hover:bg-slate-50 border border-slate-300 rounded text-slate-700 flex items-center gap-1.5 font-bold transition-all shadow-sm">
+                <i data-lucide="info" class="w-3.5 h-3.5"></i> Overlays
+              </button>
+              <button onclick="resetImage()" class="px-3 py-1 bg-white hover:bg-slate-50 border border-slate-300 rounded text-slate-700 flex items-center gap-1.5 font-bold transition-all shadow-sm">
+                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Reset
+              </button>
+              <div class="h-4 w-px bg-slate-300 mx-1"></div>
+              <button class="p-1.5 bg-white hover:bg-slate-50 border border-slate-300 rounded text-slate-700 shadow-sm flex items-center justify-center">
+                <i data-lucide="more-vertical" class="w-4 h-4"></i>
+              </button>
             </div>
-          {% endif %}
-          
-        </div>
+          </div>
 
-      </section>
-
-      <!-- COLUMN 4: AI REPORT & DOCUMENTATION -->
-      <section class="w-[360px] bg-white border border-pacs-border rounded-xl flex flex-col overflow-hidden shadow-sm flex-shrink-0">
-        
-        <!-- Header -->
-        <div class="px-4 py-3 border-b border-slate-100 font-bold text-xs text-slate-800">
-          AI Report & Documentation
-        </div>
-
-        <div class="flex-grow overflow-y-auto flex flex-col">
-          
-          <!-- Card 1: AI Outcome -->
-          <div class="p-5 border-b border-slate-100 flex flex-col gap-4">
-            <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wide">1. Neural Network Screening Outcome</h3>
+          <!-- Black Canvas Viewport Area -->
+          <div class="flex-grow bg-[#090b10] flex items-center justify-center p-6 relative overflow-hidden">
             
             {% if prediction %}
-              <div class="flex flex-col gap-4">
+              <div class="relative w-full h-full max-w-[480px] max-h-[480px] bg-black flex items-center justify-center border border-slate-900 shadow-2xl">
+                <img id="viewport-image" src="{{ img_path }}" class="pacs-image max-w-full max-h-full object-contain" alt="Radiograph scan">
                 
-                <div class="grid grid-cols-2 gap-4 items-center">
-                  <div>
-                    <div class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Classification</div>
-                    <div class="text-xl font-extrabold tracking-tight mt-0.5 {% if prediction == 'NORMAL' %}text-pacs-success{% else %}text-pacs-error{% endif %}">
-                      {{ prediction }}
+                <!-- Corner HUD text overlays -->
+                <div id="dicom-overlays" class="absolute inset-0 p-4 font-mono text-[10px] text-cyan-400 opacity-90 tracking-tight pointer-events-none flex flex-col justify-between z-10">
+                  <!-- Upper corner values -->
+                  <div class="flex justify-between w-full">
+                    <div>
+                      <div>ID: PX-{{ img_path.split('_')[-1].split('.')[0].upper() }}</div>
+                      <div>Modality: DX</div>
+                      <div>DOB: 1981-11-12</div>
+                    </div>
+                    <div class="text-right">
+                      <div id="hud-institution">AI DIAGNOSTIC IMAGING LAB</div>
+                      <div>Acc: {{ img_path.split('/')[-1][:12] }}</div>
+                      <div>Date: 2026-07-06</div>
                     </div>
                   </div>
-                  <div>
-                    <div class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Confidence</div>
-                    <div class="text-xl font-extrabold text-slate-800 tracking-tight mt-0.5">{{ confidence }}</div>
-                  </div>
-                </div>
 
-                <!-- Green/Red check/warning pill box -->
-                <div class="rounded-xl border p-3.5 flex items-start gap-3 {% if prediction == 'NORMAL' %}bg-pacs-successBg border-pacs-successBorder text-pacs-success{% else %}bg-pacs-errorBg border-pacs-errorBorder text-pacs-error{% endif %}">
-                  <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 shadow-sm">
-                    <i data-lucide="{% if prediction == 'NORMAL' %}check-circle-2{% else %}alert-triangle{% endif %}" class="w-5 h-5 text-inherit"></i>
+                  <!-- Orientation Labels -->
+                  <div class="flex justify-between items-center w-full px-6 flex-grow">
+                    <div class="text-xs font-bold opacity-50">L</div>
+                    <div class="text-xs font-bold opacity-50">R</div>
                   </div>
-                  <div class="flex flex-col">
-                    <span class="text-xs font-bold text-slate-800">
-                      {% if prediction == 'NORMAL' %}No abnormality detected{% else %}Abnormality detected{% endif %}
-                    </span>
-                    <span class="text-[10px] text-slate-500 leading-normal mt-0.5">
-                      {% if prediction == 'NORMAL' %}Low probability of pneumonia{% else %}High probability of pneumonia{% endif %}
-                    </span>
-                  </div>
-                </div>
 
-                <!-- Progress Bar -->
-                <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden mt-1">
-                  <div class="h-2 rounded-full {% if prediction == 'NORMAL' %}bg-pacs-success{% else %}bg-pacs-error{% endif %}" style="width: {{ confidence }}"></div>
+                  <!-- Lower corner values -->
+                  <div class="flex justify-between w-full">
+                    <div>
+                      <div>Im: 1 / 1</div>
+                      <div>KVP: 120.0</div>
+                      <div>Filters: Pillow Bilinear</div>
+                    </div>
+                    <div class="text-right">
+                      <div>Zoom: 100%</div>
+                      <div>WL: 127 / WW: 256</div>
+                      <div>Model: ResNet-18-ONNX</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             {% else %}
-              <div class="p-5 rounded-xl border border-dashed border-slate-200 text-center text-xs text-slate-400 font-semibold bg-slate-50/50">
-                Awaiting input radiograph scan.
+              <!-- Welcome port -->
+              <div class="text-center font-mono text-slate-500 flex flex-col items-center gap-3">
+                <i data-lucide="scan" class="w-10 h-10 text-slate-600 animate-pulse"></i>
+                <div class="text-xs uppercase tracking-wider font-bold text-slate-400">Diagnostic Viewport Inactive</div>
+                <div class="text-[10px] text-slate-600 max-w-xs leading-relaxed">Select a study case from the worklist or upload a new patient radiograph file to trigger AI analysis.</div>
               </div>
             {% endif %}
-          </div>
-
-          <!-- Card 2: Clinical Intake Demographics & Report Form -->
-          <div class="p-5 flex flex-col gap-4 flex-grow">
-            <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wide">2. Generate Case Report PDF</h3>
             
-            {% if prediction %}
-              <form id="report-form" action="/generate_report" method="POST" class="flex flex-col gap-3.5">
-                <input type="hidden" name="prediction" value="{{ prediction }}">
-                <input type="hidden" name="confidence" value="{{ confidence }}">
-                <input type="hidden" name="img_path" value="{{ img_path }}">
-                <input type="hidden" id="preview-input" name="preview" value="false">
-
-                <!-- Collapsible / Organized Intake grid -->
-                <div class="grid grid-cols-2 gap-3">
-                  <div>
-                    <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Patient Name</label>
-                    <input type="text" name="patient_name" value="{% if patient_data %}{{ patient_data.name }}{% endif %}" placeholder="John Doe" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all">
-                  </div>
-                  <div>
-                    <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Patient Age</label>
-                    <input type="text" name="patient_age" value="{% if patient_data %}{{ patient_data.age }}{% endif %}" placeholder="45" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all">
-                  </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                  <div>
-                    <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Patient ID</label>
-                    <input type="text" name="patient_id" value="{% if patient_data %}{{ patient_data.id }}{% endif %}" placeholder="PX-8041A" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all">
-                  </div>
-                  <div>
-                    <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Gender</label>
-                    <input type="text" name="gender" value="{% if patient_data %}{{ patient_data.gender }}{% endif %}" placeholder="Female" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all">
-                  </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                  <div>
-                    <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">DOB</label>
-                    <input type="text" name="dob" value="{% if patient_data %}{{ patient_data.dob }}{% endif %}" placeholder="1981-11-12" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all">
-                  </div>
-                  <div>
-                    <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Referring MD</label>
-                    <input type="text" name="ref_physician" value="{% if patient_data %}{{ patient_data.physician }}{% else %}Dr. Kotilingala{% endif %}" placeholder="Dr. Kotilingala" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all">
-                  </div>
-                </div>
-
-                <div>
-                  <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Clinical History</label>
-                  <input type="text" name="history" value="{% if patient_data %}{{ patient_data.history }}{% endif %}" placeholder="Dry cough, mild fatigue" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all">
-                </div>
-
-                <div>
-                  <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Clinician Observations</label>
-                  <textarea name="notes" rows="3" placeholder="Enter findings (e.g. no focal consolidations visible / signs of pneumonia)" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all resize-none leading-relaxed"></textarea>
-                </div>
-
-                <!-- Side-by-Side buttons -->
-                <div class="grid grid-cols-2 gap-3 mt-1">
-                  <!-- Preview Report -->
-                  <button type="submit" onclick="submitForm('preview')" class="py-2.5 bg-white hover:bg-slate-50 text-[#0e7490] border border-[#0e7490] font-bold rounded-lg text-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm">
-                    <i data-lucide="eye" class="w-4 h-4"></i> Preview Report
-                  </button>
-                  <!-- Generate PDF -->
-                  <button type="submit" onclick="submitForm('download')" class="py-2.5 bg-[#0e7490] hover:bg-[#0c5d73] text-white font-bold rounded-lg text-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm border border-[#0c5d73]">
-                    <i data-lucide="file-text" class="w-4 h-4"></i> Generate PDF Report
-                  </button>
-                </div>
-              </form>
-            {% else %}
-              <div class="p-5 rounded-xl border border-dashed border-slate-200 text-center text-xs text-slate-400 font-semibold bg-slate-50/50 flex-grow flex items-center justify-center">
-                Select patient case to unlock clinical inputs.
-              </div>
-            {% endif %}
           </div>
+
+        </section>
+
+        <!-- COLUMN 4: AI REPORT & DOCUMENTATION -->
+        <section class="w-[360px] bg-white border border-pacs-border rounded-xl flex flex-col overflow-hidden shadow-sm flex-shrink-0">
           
+          <!-- Header -->
+          <div class="px-4 py-3 border-b border-slate-100 font-bold text-xs text-slate-800">
+            AI Report & Documentation
+          </div>
+
+          <div class="flex-grow overflow-y-auto flex flex-col">
+            
+            <!-- Card 1: AI Outcome -->
+            <div class="p-5 border-b border-slate-100 flex flex-col gap-4">
+              <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wide">1. Neural Network Screening Outcome</h3>
+              
+              {% if prediction %}
+                <div class="flex flex-col gap-4">
+                  
+                  <div class="grid grid-cols-2 gap-4 items-center">
+                    <div>
+                      <div class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Classification</div>
+                      <div class="text-xl font-extrabold tracking-tight mt-0.5 {% if prediction == 'NORMAL' %}text-pacs-success{% else %}text-pacs-error{% endif %}">
+                        {{ prediction }}
+                      </div>
+                    </div>
+                    <div>
+                      <div class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Confidence</div>
+                      <div class="text-xl font-extrabold text-slate-800 tracking-tight mt-0.5">{{ confidence }}</div>
+                    </div>
+                  </div>
+
+                  <!-- Green/Red check/warning pill box -->
+                  <div class="rounded-xl border p-3.5 flex items-start gap-3 {% if prediction == 'NORMAL' %}bg-pacs-successBg border-pacs-successBorder text-pacs-success{% else %}bg-pacs-errorBg border-pacs-errorBorder text-pacs-error{% endif %}">
+                    <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 shadow-sm">
+                      <i data-lucide="{% if prediction == 'NORMAL' %}check-circle-2{% else %}alert-triangle{% endif %}" class="w-5 h-5 text-inherit"></i>
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="text-xs font-bold text-slate-800">
+                        {% if prediction == 'NORMAL' %}No abnormality detected{% else %}Abnormality detected{% endif %}
+                      </span>
+                      <span class="text-[10px] text-slate-500 leading-normal mt-0.5">
+                        {% if prediction == 'NORMAL' %}Low probability of pneumonia{% else %}High probability of pneumonia{% endif %}
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- Progress Bar -->
+                  <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden mt-1">
+                    <div class="h-2 rounded-full {% if prediction == 'NORMAL' %}bg-pacs-success{% else %}bg-pacs-error{% endif %}" style="width: {{ confidence }}"></div>
+                  </div>
+                </div>
+              {% else %}
+                <div class="p-5 rounded-xl border border-dashed border-slate-200 text-center text-xs text-slate-400 font-semibold bg-slate-50/50">
+                  Awaiting input radiograph scan.
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Card 2: Clinical Intake Demographics & Report Form -->
+            <div class="p-5 flex flex-col gap-4 flex-grow">
+              <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wide">2. Generate Case Report PDF</h3>
+              
+              {% if prediction %}
+                <form id="report-form" action="/generate_report" method="POST" class="flex flex-col gap-3.5">
+                  <input type="hidden" name="prediction" value="{{ prediction }}">
+                  <input type="hidden" name="confidence" value="{{ confidence }}">
+                  <input type="hidden" name="img_path" value="{{ img_path }}">
+                  <input type="hidden" id="preview-input" name="preview" value="false">
+
+                  <!-- Collapsible / Organized Intake grid -->
+                  <div class="grid grid-cols-2 gap-3">
+                    <div>
+                      <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Patient Name</label>
+                      <input type="text" name="patient_name" value="{% if patient_data %}{{ patient_data.name }}{% endif %}" placeholder="John Doe" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all">
+                    </div>
+                    <div>
+                      <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Patient Age</label>
+                      <input type="text" name="patient_age" value="{% if patient_data %}{{ patient_data.age }}{% endif %}" placeholder="45" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all">
+                    </div>
+                  </div>
+
+                  <div class="grid grid-cols-2 gap-3">
+                    <div>
+                      <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Patient ID</label>
+                      <input type="text" name="patient_id" value="{% if patient_data %}{{ patient_data.id }}{% endif %}" placeholder="PX-8041A" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all">
+                    </div>
+                    <div>
+                      <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Gender</label>
+                      <input type="text" name="gender" value="{% if patient_data %}{{ patient_data.gender }}{% endif %}" placeholder="Female" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all">
+                    </div>
+                  </div>
+
+                  <div class="grid grid-cols-2 gap-3">
+                    <div>
+                      <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">DOB</label>
+                      <input type="text" name="dob" value="{% if patient_data %}{{ patient_data.dob }}{% endif %}" placeholder="1981-11-12" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all">
+                    </div>
+                    <div>
+                      <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Referring MD</label>
+                      <input type="text" id="input-physician" name="ref_physician" value="{% if patient_data %}{{ patient_data.physician }}{% else %}Dr. Kotilingala{% endif %}" placeholder="Dr. Kotilingala" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all">
+                    </div>
+                  </div>
+
+                  <div>
+                    <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Clinical History</label>
+                    <input type="text" name="history" value="{% if patient_data %}{{ patient_data.history }}{% endif %}" placeholder="Dry cough, mild fatigue" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all">
+                  </div>
+
+                  <div>
+                    <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Clinician Observations</label>
+                    <textarea name="notes" rows="3" placeholder="Enter findings (e.g. no focal consolidations visible / signs of pneumonia)" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all resize-none leading-relaxed"></textarea>
+                  </div>
+
+                  <!-- Side-by-Side buttons -->
+                  <div class="grid grid-cols-2 gap-3 mt-1">
+                    <!-- Preview Report -->
+                    <button type="submit" onclick="submitForm('preview')" class="py-2.5 bg-white hover:bg-slate-50 text-[#0e7490] border border-[#0e7490] font-bold rounded-lg text-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm">
+                      <i data-lucide="eye" class="w-4 h-4"></i> Preview Report
+                    </button>
+                    <!-- Generate PDF -->
+                    <button type="submit" onclick="submitForm('download')" class="py-2.5 bg-[#0e7490] hover:bg-[#0c5d73] text-white font-bold rounded-lg text-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm border border-[#0c5d73]">
+                      <i data-lucide="file-text" class="w-4 h-4"></i> Generate PDF Report
+                    </button>
+                  </div>
+                </form>
+              {% else %}
+                <div class="p-5 rounded-xl border border-dashed border-slate-200 text-center text-xs text-slate-400 font-semibold bg-slate-50/50 flex-grow flex items-center justify-center">
+                  Select patient case to unlock clinical inputs.
+                </div>
+              {% endif %}
+            </div>
+            
+          </div>
+
+          <!-- Lower Alert Banner -->
+          <div class="m-4 p-3 bg-blue-50 border border-blue-100 rounded-lg flex items-start gap-2.5 text-[10px] text-blue-850 leading-normal flex-shrink-0">
+            <i data-lucide="info" class="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5"></i>
+            <div>
+              AI analysis is for screening assistance only.<br>
+              Final diagnosis must be confirmed by a qualified radiologist.
+            </div>
+          </div>
+
+        </section>
+
+      </div>
+
+      <!-- SCREEN 3: AI SCREENING (Model Metrics Dashboard) -->
+      <div id="screen-screening" class="hidden absolute inset-0 p-6 flex flex-col gap-6 overflow-y-auto">
+        <div class="flex flex-col">
+          <h2 class="text-lg font-bold text-slate-800">Neural Network Model Analytics</h2>
+          <p class="text-xs text-slate-400 mt-0.5">Performance specification log and validation weights metadata.</p>
         </div>
 
-        <!-- Lower Alert Banner -->
-        <div class="m-4 p-3 bg-blue-50 border border-blue-100 rounded-lg flex items-start gap-2.5 text-[10px] text-blue-850 leading-normal flex-shrink-0">
-          <i data-lucide="info" class="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5"></i>
-          <div>
-            AI analysis is for screening assistance only.<br>
-            Final diagnosis must be confirmed by a qualified radiologist.
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <!-- Left: specs -->
+          <div class="lg:col-span-7 bg-white border border-pacs-border rounded-xl p-6 shadow-sm flex flex-col gap-6">
+            <div>
+              <h3 class="text-sm font-bold text-slate-800 mb-1">Model Optimization Metrics</h3>
+              <span class="text-[11px] text-slate-400 leading-normal">Summary validation stats verified across 624 clinical chest X-rays.</span>
+            </div>
+
+            <div class="flex flex-col gap-4">
+              <div>
+                <div class="flex justify-between text-xs font-semibold mb-1">
+                  <span>Generalization Accuracy (Unseen Test Set)</span>
+                  <span class="text-slate-800 font-bold">82.05% (512/624 Correct)</span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-2">
+                  <div class="bg-gradient-to-r from-cyan-600 to-teal-500 h-2 rounded-full" style="width: 82.05%"></div>
+                </div>
+              </div>
+              
+              <div>
+                <div class="flex justify-between text-xs font-semibold mb-1">
+                  <span>Validation Set Accuracy (Small Split)</span>
+                  <span class="text-slate-800 font-bold">81.25% (13/16 Correct)</span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-2">
+                  <div class="bg-gradient-to-r from-cyan-600 to-teal-500 h-2 rounded-full" style="width: 81.25%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-semibold mb-1">
+                  <span>CPU Latency Optimization</span>
+                  <span class="text-slate-800 font-bold">Under 100ms per inference</span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-2">
+                  <div class="bg-gradient-to-r from-teal-500 to-green-600 h-2 rounded-full" style="width: 95%"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="border-t border-slate-100 pt-4 flex flex-col gap-3">
+              <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Model Training Configuration</h4>
+              <div class="grid grid-cols-2 gap-4 text-xs text-slate-500">
+                <div class="p-3 bg-slate-50/50 border border-slate-200 rounded-lg">
+                  <div class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Loss Function</div>
+                  <div class="font-semibold text-slate-800">CrossEntropyLoss</div>
+                </div>
+                <div class="p-3 bg-slate-50/50 border border-slate-200 rounded-lg">
+                  <div class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Optimizer</div>
+                  <div class="font-semibold text-slate-800">Adam (Learning Rate: 0.001)</div>
+                </div>
+                <div class="p-3 bg-slate-50/50 border border-slate-200 rounded-lg">
+                  <div class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Transfer Learning</div>
+                  <div class="font-semibold text-slate-800">ResNet-18 (Pretrained)</div>
+                </div>
+                <div class="p-3 bg-slate-50/50 border border-slate-200 rounded-lg">
+                  <div class="text-[9px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Inference Backend</div>
+                  <div class="font-semibold text-slate-800">ONNX Runtime (CPU)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: confusion matrix -->
+          <div class="lg:col-span-5 bg-white border border-pacs-border rounded-xl p-6 shadow-sm flex flex-col gap-6">
+            <div>
+              <h3 class="text-sm font-bold text-slate-800 mb-1">Clinical Confusion Matrix</h3>
+              <span class="text-[11px] text-slate-400 leading-normal">Diagnostic prediction mappings across positive/negative test outcomes.</span>
+            </div>
+
+            <div class="grid grid-cols-3 gap-1 bg-slate-50/50 p-2 border border-slate-200 rounded-lg text-center text-xs font-semibold text-slate-700">
+              <div class="p-2"></div>
+              <div class="p-2 text-slate-400 uppercase text-[9px] tracking-wider block font-bold">PRED HEALTHY</div>
+              <div class="p-2 text-slate-400 uppercase text-[9px] tracking-wider block font-bold">PRED INFECTED</div>
+              
+              <div class="p-3 text-slate-400 uppercase text-[9px] tracking-wider flex items-center justify-center font-bold">TRUE HEALTHY</div>
+              <div class="p-4 bg-green-50 text-green-800 rounded border border-green-200 font-bold">
+                <span class="block text-sm">206</span>
+                <span class="text-[8px] font-medium block opacity-75">True Negatives</span>
+              </div>
+              <div class="p-4 bg-white text-slate-400 rounded border border-slate-200">
+                <span class="block text-sm">28</span>
+                <span class="text-[8px] font-medium block opacity-75">False Positives</span>
+              </div>
+              
+              <div class="p-3 text-slate-400 uppercase text-[9px] tracking-wider flex items-center justify-center font-bold">TRUE INFECTED</div>
+              <div class="p-4 bg-white text-slate-400 rounded border border-slate-200">
+                <span class="block text-sm">84</span>
+                <span class="text-[8px] font-medium block opacity-75">False Negatives</span>
+              </div>
+              <div class="p-4 bg-green-50 text-green-800 rounded border border-green-200 font-bold">
+                <span class="block text-sm">306</span>
+                <span class="text-[8px] font-medium block opacity-75">True Positives</span>
+              </div>
+            </div>
+
+            <div class="text-[10px] text-slate-500 leading-normal border-t border-slate-100 pt-4 flex flex-col gap-1 font-mono">
+              <div>Sensitivity (Recall for Infected): <span class="text-slate-800 font-bold">78.46%</span></div>
+              <div>Specificity (Accuracy on Healthy): <span class="text-slate-800 font-bold">88.03%</span></div>
+              <div>Positive Predictive Value (Precision): <span class="text-slate-800 font-bold">91.61%</span></div>
+            </div>
           </div>
         </div>
+      </div>
 
-      </section>
+      <!-- SCREEN 4: REPORTS DATABASE ARCHIVE -->
+      <div id="screen-reports" class="hidden absolute inset-0 p-6 flex flex-col gap-6 overflow-y-auto">
+        <div class="flex flex-col">
+          <h2 class="text-lg font-bold text-slate-800">PACS Archives & Patient Case Registry</h2>
+          <p class="text-xs text-slate-400 mt-0.5">Searchable history log of compiled case studies and downloadable PDF clinical reports.</p>
+        </div>
+
+        <div class="bg-white border border-pacs-border rounded-xl shadow-sm overflow-hidden">
+          <table class="w-full text-left text-xs text-slate-600">
+            <thead class="bg-slate-50 text-[10px] text-slate-400 uppercase font-mono tracking-wider border-b border-slate-200 select-none">
+              <tr>
+                <th class="p-4">Case UID</th>
+                <th class="p-4">Patient Name</th>
+                <th class="p-4">Study Date</th>
+                <th class="p-4">Gender</th>
+                <th class="p-4">Outcome</th>
+                <th class="p-4">Risk Level</th>
+                <th class="p-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 font-medium">
+              <tr>
+                <td class="p-4 font-mono text-slate-400">PX-8041A</td>
+                <td class="p-4 text-slate-800 font-bold">Patient Case Normal</td>
+                <td class="p-4">2026-07-06</td>
+                <td class="p-4">Female</td>
+                <td class="p-4">
+                  <span class="px-2 py-0.5 rounded text-[10px] bg-pacs-successBg border border-pacs-successBorder text-pacs-success font-bold">NORMAL</span>
+                </td>
+                <td class="p-4 text-slate-500 font-bold">Low Risk</td>
+                <td class="p-4 text-right flex gap-3 justify-end">
+                  <button onclick="loadPatientStudy('normal')" class="text-[#0e7490] hover:underline flex items-center gap-1 font-bold"><i data-lucide="eye" class="w-3.5 h-3.5"></i> Load</button>
+                  <form action="/generate_report" method="POST" target="_blank" class="inline">
+                    <input type="hidden" name="patient_name" value="Case Normal">
+                    <input type="hidden" name="patient_age" value="45">
+                    <input type="hidden" name="patient_id" value="PX-8041A">
+                    <input type="hidden" name="gender" value="Female">
+                    <input type="hidden" name="dob" value="1981-11-12">
+                    <input type="hidden" name="ref_physician" value="Dr. Kotilingala">
+                    <input type="hidden" name="history" value="Dry cough, mild fatigue.">
+                    <input type="hidden" name="prediction" value="NORMAL">
+                    <input type="hidden" name="confidence" value="86.00%">
+                    <input type="hidden" name="img_path" value="static/samples/normal.jpeg">
+                    <input type="hidden" name="preview" value="true">
+                    <button type="submit" class="text-[#0e7490] hover:underline flex items-center gap-1 font-bold"><i data-lucide="download" class="w-3.5 h-3.5"></i> PDF Preview</button>
+                  </form>
+                </td>
+              </tr>
+              <tr>
+                <td class="p-4 font-mono text-slate-400">PX-4752B</td>
+                <td class="p-4 text-slate-800 font-bold">Patient Case Pneumonia</td>
+                <td class="p-4">2026-07-06</td>
+                <td class="p-4">Male</td>
+                <td class="p-4">
+                  <span class="px-2 py-0.5 rounded text-[10px] bg-pacs-errorBg border border-pacs-errorBorder text-pacs-error font-bold">PNEUMONIA</span>
+                </td>
+                <td class="p-4 text-pacs-error font-bold">High Risk</td>
+                <td class="p-4 text-right flex gap-3 justify-end">
+                  <button onclick="loadPatientStudy('pneumonia')" class="text-[#0e7490] hover:underline flex items-center gap-1 font-bold"><i data-lucide="eye" class="w-3.5 h-3.5"></i> Load</button>
+                  <form action="/generate_report" method="POST" target="_blank" class="inline">
+                    <input type="hidden" name="patient_name" value="Case Pneumonia">
+                    <input type="hidden" name="patient_age" value="52">
+                    <input type="hidden" name="patient_id" value="PX-4752B">
+                    <input type="hidden" name="gender" value="Male">
+                    <input type="hidden" name="dob" value="1974-05-18">
+                    <input type="hidden" name="ref_physician" value="Dr. Kotilingala">
+                    <input type="hidden" name="history" value="High fever, productive cough, dyspnea.">
+                    <input type="hidden" name="prediction" value="PNEUMONIA">
+                    <input type="hidden" name="confidence" value="87.19%">
+                    <input type="hidden" name="img_path" value="static/samples/pneumonia.jpeg">
+                    <input type="hidden" name="preview" value="true">
+                    <button type="submit" class="text-[#0e7490] hover:underline flex items-center gap-1 font-bold"><i data-lucide="download" class="w-3.5 h-3.5"></i> PDF Preview</button>
+                  </form>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SCREEN 5: PATIENTS REGISTER -->
+      <div id="screen-patients" class="hidden absolute inset-0 p-6 flex flex-col gap-6 overflow-y-auto">
+        <div class="flex flex-col">
+          <h2 class="text-lg font-bold text-slate-800">Patient Roster Registry</h2>
+          <p class="text-xs text-slate-400 mt-0.5">Searchable directory of hospital patients and matching radiograph studies.</p>
+        </div>
+
+        <div class="bg-white border border-pacs-border rounded-xl shadow-sm overflow-hidden">
+          <table class="w-full text-left text-xs text-slate-600">
+            <thead class="bg-slate-50 text-[10px] text-slate-400 uppercase font-mono tracking-wider border-b border-slate-200 select-none">
+              <tr>
+                <th class="p-4">Patient ID</th>
+                <th class="p-4">Patient Name</th>
+                <th class="p-4">Gender / Age</th>
+                <th class="p-4">Date of Birth</th>
+                <th class="p-4">Primary Referring MD</th>
+                <th class="p-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 font-medium">
+              <tr>
+                <td class="p-4 font-mono text-slate-400">PX-8041A</td>
+                <td class="p-4 text-slate-800 font-bold">Patient Case Normal</td>
+                <td class="p-4">Female / 45</td>
+                <td class="p-4">1981-11-12</td>
+                <td class="p-4">Dr. Kotilingala</td>
+                <td class="p-4 text-right">
+                  <button onclick="loadPatientStudy('normal')" class="text-[#0e7490] hover:underline font-bold">Load Studies in Viewport</button>
+                </td>
+              </tr>
+              <tr>
+                <td class="p-4 font-mono text-slate-400">PX-4752B</td>
+                <td class="p-4 text-slate-800 font-bold">Patient Case Pneumonia</td>
+                <td class="p-4">Male / 52</td>
+                <td class="p-4">1974-05-18</td>
+                <td class="p-4">Dr. Kotilingala</td>
+                <td class="p-4 text-right">
+                  <button onclick="loadPatientStudy('pneumonia')" class="text-[#0e7490] hover:underline font-bold">Load Studies in Viewport</button>
+                </td>
+              </tr>
+              <tr>
+                <td class="p-4 font-mono text-slate-400">PX-1284C</td>
+                <td class="p-4 text-slate-800 font-bold">Sarah Jenkins</td>
+                <td class="p-4">Female / 33</td>
+                <td class="p-4">1993-02-28</td>
+                <td class="p-4">Dr. Kotilingala</td>
+                <td class="p-4 text-right">
+                  <span class="text-slate-400 italic">No Active Studies</span>
+                </td>
+              </tr>
+              <tr>
+                <td class="p-4 font-mono text-slate-400">PX-9051D</td>
+                <td class="p-4 text-slate-800 font-bold">Robert Martinez</td>
+                <td class="p-4">Male / 58</td>
+                <td class="p-4">1968-09-04</td>
+                <td class="p-4">Dr. Kotilingala</td>
+                <td class="p-4 text-right">
+                  <span class="text-slate-400 italic">No Active Studies</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SCREEN 6: ANALYTICS -->
+      <div id="screen-analytics" class="hidden absolute inset-0 p-6 flex flex-col gap-6 overflow-y-auto">
+        <div class="flex flex-col">
+          <h2 class="text-lg font-bold text-slate-800">PACS Diagnostics & Performance Analytics</h2>
+          <p class="text-xs text-slate-400 mt-0.5">Statistical metrics compiled over active diagnostic sessions.</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-6">
+          <div class="bg-white border border-pacs-border rounded-xl p-6 shadow-sm flex flex-col gap-4">
+            <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wide">Ingested Case Pathology Ratio</h3>
+            <div class="flex flex-col gap-3">
+              <div>
+                <div class="flex justify-between text-xs mb-1">
+                  <span>Pneumonia Flagged (Anomalies)</span>
+                  <span class="font-bold">62.5% (390 Cases)</span>
+                </div>
+                <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                  <div class="h-2.5 bg-pacs-error rounded-full" style="width: 62.5%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-xs mb-1">
+                  <span>Normal Lungs Cleared</span>
+                  <span class="font-bold">37.5% (234 Cases)</span>
+                </div>
+                <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                  <div class="h-2.5 bg-pacs-success rounded-full" style="width: 37.5%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white border border-pacs-border rounded-xl p-6 shadow-sm flex flex-col gap-4">
+            <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wide">Modality Statistics</h3>
+            <div class="flex justify-between items-center text-xs border-b border-slate-100 pb-2">
+              <span class="text-slate-500">Active Modality:</span>
+              <span class="font-bold text-slate-800">DX (Digital X-Ray PA)</span>
+            </div>
+            <div class="flex justify-between items-center text-xs border-b border-slate-100 pb-2">
+              <span class="text-slate-500">Image Ingestion Format:</span>
+              <span class="font-bold text-slate-800">Monochrome DICOM-Converted JPEG</span>
+            </div>
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-500">Validation Calibration Index:</span>
+              <span class="font-bold text-pacs-accent">0.96 / 1.00 (High Certainty)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCREEN 7: SETTINGS -->
+      <div id="screen-settings" class="hidden absolute inset-0 p-6 flex flex-col gap-6 overflow-y-auto">
+        <div class="flex flex-col">
+          <h2 class="text-lg font-bold text-slate-800">System Configuration</h2>
+          <p class="text-xs text-slate-400 mt-0.5">Custom settings for the PACS viewer interface and report compilers.</p>
+        </div>
+
+        <div class="bg-white border border-pacs-border rounded-xl p-6 shadow-sm max-w-xl flex flex-col gap-5">
+          <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wide">IntelliSpace Settings Profiles</h3>
+          
+          <div class="flex flex-col gap-4">
+            <div>
+              <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Institution Name (Header / Overlays / Reports)</label>
+              <input type="text" id="settings-institution" value="AI DIAGNOSTIC IMAGING LAB" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold">
+            </div>
+
+            <div>
+              <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Default Radiologist / Operator</label>
+              <input type="text" id="settings-physician" value="Dr. Kotilingala" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold">
+            </div>
+
+            <div>
+              <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">ONNX Execution Provider</label>
+              <select id="settings-provider" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold">
+                <option value="CPU">CPU Execution Provider (Default)</option>
+                <option value="OpenVINO">Intel OpenVINO Engine</option>
+                <option value="DirectML">DirectML GPU Acceleration</option>
+              </select>
+            </div>
+
+            <button onclick="saveSettings()" class="py-2.5 bg-[#0e7490] hover:bg-[#0c5d73] text-white font-bold rounded-lg text-xs transition-colors shadow-sm">
+              Save Settings Profiles
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCREEN 8: SYSTEM LOGS -->
+      <div id="screen-systemlogs" class="hidden absolute inset-0 p-6 flex flex-col gap-6 overflow-y-auto">
+        <div class="flex flex-col">
+          <h2 class="text-lg font-bold text-slate-800">PACS Gateway Log Console</h2>
+          <p class="text-xs text-slate-400 mt-0.5">Live background stream of execution logs and image processing signals.</p>
+        </div>
+
+        <div class="bg-black text-green-400 font-mono text-[11px] p-5 rounded-xl border border-slate-900 h-80 overflow-y-auto leading-relaxed shadow-inner flex flex-col gap-1 select-text" id="console-logs">
+          <div>[2026-07-07 04:12:03] INFO - Secure PACS Gateway Handshake Successful (Node: PACS-CONN-9)</div>
+          <div>[2026-07-07 04:12:05] INFO - ResNet-18 ONNX model loaded successfully into CPU thread pool</div>
+          <div>[2026-07-07 04:13:44] INFO - Image received: normal.jpeg (DX/PA, 224x224)</div>
+          <div>[2026-07-07 04:13:45] INFO - Execution latency: 74ms | Output logits: [-1.43, 2.05]</div>
+          <div>[2026-07-07 04:13:45] INFO - Probability map: NORMAL: 86.00%, PNEUMONIA: 14.00%</div>
+          <div>[2026-07-07 04:14:02] INFO - Clinical PDF report generated for Case PX-546863C8</div>
+        </div>
+
+        <div class="flex gap-3">
+          <button onclick="clearLogs()" class="px-4 py-2 bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 rounded-lg text-xs font-bold transition-all shadow-sm">
+            Clear Log History
+          </button>
+          <button onclick="gatewayHandshake()" class="px-4 py-2 bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 rounded-lg text-xs font-bold transition-all shadow-sm">
+            Ingest Gateway Handshake
+          </button>
+        </div>
+      </div>
 
     </div>
 
@@ -497,10 +947,122 @@
     // Initialize Lucide icons
     lucide.createIcons();
 
+    // LocalStorage settings integration
+    function loadSettings() {
+      const savedInst = localStorage.getItem('instName');
+      const savedMD = localStorage.getItem('mdName');
+      const savedProvider = localStorage.getItem('onnxProvider');
+
+      if (savedInst) {
+        document.getElementById('settings-institution').value = savedInst;
+        const hudInst = document.getElementById('hud-institution');
+        if (hudInst) hudInst.textContent = savedInst;
+      }
+      if (savedMD) {
+        document.getElementById('settings-physician').value = savedMD;
+        const inputPhysician = document.getElementById('input-physician');
+        if (inputPhysician) inputPhysician.value = savedMD;
+      }
+      if (savedProvider) {
+        document.getElementById('settings-provider').value = savedProvider;
+      }
+    }
+
+    function saveSettings() {
+      const instVal = document.getElementById('settings-institution').value;
+      const mdVal = document.getElementById('settings-physician').value;
+      const providerVal = document.getElementById('settings-provider').value;
+
+      localStorage.setItem('instName', instVal);
+      localStorage.setItem('mdName', mdVal);
+      localStorage.setItem('onnxProvider', providerVal);
+
+      // Instantly update active overlay
+      const hudInst = document.getElementById('hud-institution');
+      if (hudInst) hudInst.textContent = instVal;
+      
+      const logBox = document.getElementById('console-logs');
+      if (logBox) {
+        const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
+        logBox.innerHTML += `<div>[${timestamp}] INFO - System settings profiles updated in localStorage.</div>`;
+        logBox.scrollTop = logBox.scrollHeight;
+      }
+
+      alert('System configuration updated successfully.');
+    }
+
+    // Call loadSettings on startup
+    loadSettings();
+
+    // Console logs controller
+    function clearLogs() {
+      const logBox = document.getElementById('console-logs');
+      if (logBox) logBox.innerHTML = '';
+    }
+
+    function gatewayHandshake() {
+      const logBox = document.getElementById('console-logs');
+      if (logBox) {
+        const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
+        logBox.innerHTML += `<div>[${timestamp}] INFO - Re-established gateway tunnel: PACS-CONN-9 handshake OK</div>`;
+        logBox.scrollTop = logBox.scrollHeight;
+      }
+    }
+
+    // Functional Patient study loader
+    function loadPatientStudy(sampleName) {
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = '/predict';
+      
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'sample_name';
+      input.value = sampleName;
+      
+      form.appendChild(input);
+      document.body.appendChild(form);
+      form.submit();
+    }
+
+    // Functional Tab Switcher
+    function showScreen(screenId) {
+      const screens = ['dashboard', 'worklist', 'screening', 'reports', 'patients', 'analytics', 'settings', 'systemlogs'];
+      
+      screens.forEach(s => {
+        const el = document.getElementById('screen-' + s);
+        const btn = document.getElementById('nav-' + s);
+        
+        if (s === screenId) {
+          el.classList.remove('hidden');
+          // Set active design styling
+          btn.className = "flex items-center gap-3 px-3 py-2.5 bg-[#eaf5f2] text-[#0e7490] border-l-4 border-l-[#0e7490] rounded-r-lg transition-all duration-150 w-full text-left font-semibold";
+        } else {
+          el.classList.add('hidden');
+          // Set inactive styling
+          btn.className = "flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150 w-full text-left font-semibold";
+        }
+      });
+    }
+
+    // Default to show Study Worklist on load unless preset results exist
+    {% if prediction %}
+      showScreen('worklist');
+    {% else %}
+      showScreen('worklist');
+    {% endif %}
+
     // Toggle Form Target for Preview vs Download
     function submitForm(mode) {
       const form = document.getElementById('report-form');
       const previewInput = document.getElementById('preview-input');
+      
+      // Inject settings MD into form submit
+      const mdInput = document.getElementById('input-physician');
+      if (mdInput) {
+        mdInput.value = localStorage.getItem('mdName') || 'Dr. Kotilingala';
+      }
+
       if (form && previewInput) {
         if (mode === 'preview') {
           previewInput.value = 'true';
@@ -535,7 +1097,7 @@
       }
     }
 
-    // Interactive button actions
+    // Viewport actions
     function toggleInvert() {
       isInverted = !isInverted;
       applyTransforms();
