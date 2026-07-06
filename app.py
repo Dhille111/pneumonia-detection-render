@@ -2,7 +2,10 @@ import os
 import logging
 import numpy as np
 import onnxruntime as ort
-from flask import Flask, render_template, request, redirect, jsonify
+import uuid
+import shutil
+from datetime import datetime
+from flask import Flask, render_template, request, redirect, jsonify, send_file
 from PIL import Image
 from werkzeug.utils import secure_filename
 import io
@@ -85,36 +88,53 @@ def predict():
                 error="Model failed to load. Please try again later."
             ), 500
 
-        if "file" not in request.files:
-            logger.warning("No file provided in request")
-            return redirect("/")
+        # Check if running a preset sample
+        sample_name = request.form.get("sample_name")
+        if sample_name in ["normal", "pneumonia"]:
+            sample_file = os.path.join(BASE_DIR, "static", "samples", f"{sample_name}.jpeg")
+            if not os.path.exists(sample_file):
+                logger.error(f"Sample file not found: {sample_file}")
+                return render_template(
+                    "index.html",
+                    prediction="ERROR",
+                    error=f"Sample file '{sample_name}.jpeg' not found on server."
+                ), 404
+            
+            filename = f"sample_{sample_name}_{uuid.uuid4().hex[:8]}.jpeg"
+            filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+            shutil.copy(sample_file, filepath)
+            logger.info(f"Loaded sample image: {sample_name} -> {filename}")
+        else:
+            # Handle regular file upload
+            if "file" not in request.files:
+                logger.warning("No file provided in request")
+                return redirect("/")
 
-        file = request.files["file"]
-        if file.filename == "":
-            logger.warning("Empty filename provided")
-            return redirect("/")
+            file = request.files["file"]
+            if file.filename == "":
+                logger.warning("Empty filename provided")
+                return redirect("/")
 
-        # Validate file type
-        if not allowed_file(file.filename):
-            logger.warning(f"Invalid file type: {file.filename}")
-            return render_template(
-                "index.html",
-                prediction="ERROR",
-                error="Invalid file type. Please upload an image (PNG, JPG, GIF, BMP, WebP)."
-            ), 400
+            # Validate file type
+            if not allowed_file(file.filename):
+                logger.warning(f"Invalid file type: {file.filename}")
+                return render_template(
+                    "index.html",
+                    prediction="ERROR",
+                    error="Invalid file type. Please upload an image (PNG, JPG, GIF, BMP, WebP)."
+                ), 400
 
-        # Secure filename
-        filename = secure_filename(file.filename)
-        filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
-        
-        # Create unique filename to avoid overwrites
-        import uuid
-        base, ext = os.path.splitext(filename)
-        filename = f"{base}_{uuid.uuid4().hex[:8]}{ext}"
-        filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
-        
-        file.save(filepath)
-        logger.info(f"File uploaded: {filename}")
+            # Secure filename
+            filename = secure_filename(file.filename)
+            filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+            
+            # Create unique filename to avoid overwrites
+            base, ext = os.path.splitext(filename)
+            filename = f"{base}_{uuid.uuid4().hex[:8]}{ext}"
+            filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+            
+            file.save(filepath)
+            logger.info(f"File uploaded: {filename}")
 
         # Load and preprocess image using pure NumPy and Pillow
         img_np = preprocess_image(filepath)
@@ -149,6 +169,150 @@ def predict():
             prediction="ERROR",
             error="An error occurred during prediction. Please try again."
         ), 500
+
+@app.route("/generate_report", methods=["POST"])
+def generate_report():
+    """Generates a downloadable clinical PDF report for the patient case"""
+    try:
+        patient_name = request.form.get("patient_name", "Anonymous Patient").strip()
+        patient_age = request.form.get("patient_age", "N/A").strip()
+        notes = request.form.get("notes", "No clinical findings reported.").strip()
+        prediction = request.form.get("prediction", "UNKNOWN")
+        confidence = request.form.get("confidence", "0.00%")
+        img_path = request.form.get("img_path", "")
+
+        # Format patient info safely
+        if not patient_name:
+            patient_name = "Anonymous Patient"
+            
+        # Create PDF using fpdf2
+        from fpdf import FPDF
+        pdf = FPDF()
+        pdf.add_page()
+        
+        # Corporate Navy Banner
+        pdf.set_fill_color(24, 43, 73)
+        pdf.rect(0, 0, 210, 30, 'F')
+        
+        pdf.set_xy(10, 8)
+        pdf.set_text_color(255, 255, 255)
+        pdf.set_font("Helvetica", "B", 15)
+        pdf.cell(0, 8, "CLINICAL DIAGNOSTIC SCREENING REPORT", align="C")
+        pdf.ln(8)
+        pdf.set_font("Helvetica", "I", 9)
+        pdf.cell(0, 5, "Decision Support System for Pneumonia Detection", align="C")
+        
+        # Demographic Table
+        pdf.set_xy(10, 38)
+        pdf.set_text_color(44, 62, 80)
+        pdf.set_font("Helvetica", "B", 11)
+        pdf.cell(0, 8, "1. Patient Demographics & Identification Details")
+        pdf.ln(8)
+        
+        pdf.set_fill_color(240, 244, 248)
+        pdf.set_text_color(60, 60, 60)
+        pdf.set_font("Helvetica", "", 9.5)
+        
+        # Demographics Table cells
+        pdf.cell(40, 7, "Patient Name:", border=1, fill=True)
+        pdf.cell(55, 7, patient_name, border=1)
+        pdf.cell(40, 7, "Patient Age:", border=1, fill=True)
+        pdf.cell(55, 7, patient_age, border=1)
+        pdf.ln()
+        
+        current_date = datetime.now().strftime("%Y-%m-%d %H:%M")
+        case_id = f"PX-{uuid.uuid4().hex[:8].upper()}"
+        
+        pdf.cell(40, 7, "Case ID:", border=1, fill=True)
+        pdf.cell(55, 7, case_id, border=1)
+        pdf.cell(40, 7, "Report Date/Time:", border=1, fill=True)
+        pdf.cell(55, 7, current_date, border=1)
+        pdf.ln(12)
+        
+        # Diagnostic Outcome Section
+        pdf.set_font("Helvetica", "B", 11)
+        pdf.set_text_color(24, 43, 73)
+        pdf.cell(0, 8, "2. Diagnostic Screening Analysis Result")
+        pdf.ln(8)
+        
+        is_pneumonia = (prediction == "PNEUMONIA")
+        bg_color = (253, 242, 242) if is_pneumonia else (240, 253, 244)
+        border_color = (252, 165, 165) if is_pneumonia else (187, 247, 208)
+        text_color = (153, 27, 27) if is_pneumonia else (22, 101, 52)
+        
+        pdf.set_fill_color(*bg_color)
+        pdf.set_draw_color(*border_color)
+        pdf.set_line_width(0.4)
+        
+        pdf.cell(0, 16, "", border=1, fill=True)
+        current_y = pdf.get_y()
+        pdf.set_xy(15, current_y - 14)
+        
+        pdf.set_font("Helvetica", "B", 12)
+        pdf.set_text_color(*text_color)
+        pdf.cell(0, 6, f"SCREENING OUTCOME: {prediction}")
+        pdf.ln(5.5)
+        pdf.set_font("Helvetica", "B", 9.5)
+        pdf.cell(0, 5, f"Neural Network Confidence: {confidence} (ResNet-18 Model Backend)")
+        
+        pdf.set_xy(10, current_y + 6)
+        pdf.ln(5)
+        
+        # Ingested Image block
+        if img_path:
+            full_img_path = os.path.join(BASE_DIR, img_path)
+            if os.path.exists(full_img_path):
+                pdf.set_font("Helvetica", "B", 11)
+                pdf.set_text_color(24, 43, 73)
+                pdf.cell(0, 8, "3. Ingested Chest Radiograph (X-Ray)")
+                pdf.ln(8)
+                
+                # Draw a soft border around image
+                pdf.image(full_img_path, x=45, y=pdf.get_y(), w=120)
+                pdf.set_y(pdf.get_y() + 100) # push past image space
+                pdf.ln(5)
+            
+        # Clinical Notes Section
+        pdf.set_font("Helvetica", "B", 11)
+        pdf.set_text_color(24, 43, 73)
+        pdf.cell(0, 8, "4. Clinician Observations & Notes")
+        pdf.ln(8)
+        pdf.set_font("Helvetica", "", 9.5)
+        pdf.set_text_color(60, 60, 60)
+        pdf.multi_cell(0, 5, notes)
+        pdf.ln(10)
+        
+        # Signatures
+        pdf.set_line_width(0.1)
+        pdf.set_draw_color(180, 180, 180)
+        pdf.line(10, pdf.get_y(), 200, pdf.get_y())
+        pdf.ln(4)
+        
+        pdf.set_font("Helvetica", "I", 7.5)
+        pdf.set_text_color(128, 128, 128)
+        disclaimer = (
+            "Medical Disclaimer: This report is generated dynamically by an automated AI diagnostic support system. "
+            "It is not a final certified diagnosis. The results should be evaluated in context with other clinical findings "
+            "and laboratory parameters, and must be reviewed and signed off by a certified medical radiologist."
+        )
+        pdf.multi_cell(0, 4, disclaimer)
+        
+        # Save temp file
+        import tempfile
+        temp_dir = tempfile.gettempdir()
+        report_filename = f"Clinical_Report_{case_id}.pdf"
+        report_filepath = os.path.join(temp_dir, report_filename)
+        pdf.output(report_filepath)
+        
+        return send_file(
+            report_filepath,
+            as_attachment=True,
+            download_name=report_filename,
+            mimetype="application/pdf"
+        )
+    except Exception as e:
+        logger.error(f"Error compiling PDF report: {str(e)}", exc_info=True)
+        return "Internal server error compilation failed", 500
 
 @app.errorhandler(400)
 def bad_request(error):
