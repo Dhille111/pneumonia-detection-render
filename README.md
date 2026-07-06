@@ -8,10 +8,13 @@
 
 > **A CPU-optimized, clinical-decision support tool utilizing Transfer Learning (ResNet-18) and ONNX Runtime to detect Pneumonia from chest X-ray radiographs in under 100ms.**
 
+**🌐 Production Live Link**: [https://pneumonia-detection-render-4.onrender.com](https://pneumonia-detection-render-4.onrender.com)
+
 ---
 
 ## 📖 Table of Contents
 - [Clinical Problem & Market Gap](#-clinical-problem--market-gap)
+- [Workspace & Diagnostic Reports Preview](#-workspace--diagnostic-reports-preview)
 - [System Architecture & Data Pipeline](#-system-architecture--data-pipeline)
 - [Technical Optimization (ONNX Migration)](#-technical-optimization-onnx-migration)
 - [Model Performance & Evaluation](#-model-performance--evaluation)
@@ -39,6 +42,20 @@ A lightweight, open-source, browser-accessible diagnostic assistant. General pra
 * **Transfer Learning**: Fine-tuned a pre-trained **ResNet-18** model on chest X-ray images, leveraging ImageNet-trained feature extractors to prevent overfitting on clinical samples.
 * **Production Serialization**: Converted the PyTorch weights to the **ONNX** format, bypassing heavy Python packages in production.
 * **Web Service**: Wrapped in a concurrent Flask server with validation filters and UUID filename isolation.
+
+---
+
+## 🖼 Workspace & Diagnostic Reports Preview
+
+### 1. Interactive PACS Worklist & Viewport Workspace
+Displays the Patient Worklist, active Grayscale Radiograph Canvas with real-time contrast inversion/rotation filters, corner DICOM overlay annotations, and the AI Decision Support Report intake panel.
+
+![PACS Dashboard Workspace](docs/screenshots/final_pacs_workspace.png)
+
+### 2. Compiled Double-Page PACS PDF Diagnostic Report
+The generated clinical diagnostic report matching GE Healthcare/Epic Systems PACs report structures. Includes demographics, AI metrics tables, narrative findings, grayscale radiograph placement, and digital signature stamps.
+
+![PACS Report PDF Preview](docs/screenshots/preview_report_pdf.png)
 
 ---
 
