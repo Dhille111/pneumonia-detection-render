@@ -26,7 +26,7 @@
               bg: '#f4f7f9',           /* Realistic Gray Background */
               text: '#1e293b',         /* Slate 800 */
               success: '#15803d',      /* Muted Green */
-              successBg: '#edf7f2',    /* Mockup Outcome Green Background */
+              successBg: '#edf7f2',    /* Green Background */
               successBorder: '#d3f4e3',
               warn: '#b45309',         /* Amber */
               warnBg: '#fffbeb',
@@ -377,8 +377,8 @@
 
                 <!-- Green/Red check/warning pill box -->
                 <div class="rounded-xl border p-3.5 flex items-start gap-3 {% if prediction == 'NORMAL' %}bg-pacs-successBg border-pacs-successBorder text-pacs-success{% else %}bg-pacs-errorBg border-pacs-errorBorder text-pacs-error{% endif %}">
-                  <div class="p-1 rounded-full bg-white flex items-center justify-center flex-shrink-0 shadow-sm">
-                    <i data-lucide="{% if prediction == 'NORMAL' %}check-circle-2{% else %}alert-triangle{% endif %}" class="w-4 h-4 text-inherit"></i>
+                  <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center flex-shrink-0 shadow-sm">
+                    <i data-lucide="{% if prediction == 'NORMAL' %}check-circle-2{% else %}alert-triangle{% endif %}" class="w-5 h-5 text-inherit"></i>
                   </div>
                   <div class="flex flex-col">
                     <span class="text-xs font-bold text-slate-800">
@@ -402,7 +402,7 @@
             {% endif %}
           </div>
 
-          <!-- Card 2: Report Generation (Previewable inline & Downloadable as attachment) -->
+          <!-- Card 2: Clinical Intake Demographics & Report Form -->
           <div class="p-5 flex flex-col gap-4 flex-grow">
             <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wide">2. Generate Case Report PDF</h3>
             
@@ -413,28 +413,57 @@
                 <input type="hidden" name="img_path" value="{{ img_path }}">
                 <input type="hidden" id="preview-input" name="preview" value="false">
 
-                <div>
-                  <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Patient Name</label>
-                  <input type="text" name="patient_name" placeholder="John Doe" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all">
+                <!-- Collapsible / Organized Intake grid -->
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Patient Name</label>
+                    <input type="text" name="patient_name" value="{% if patient_data %}{{ patient_data.name }}{% endif %}" placeholder="John Doe" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all">
+                  </div>
+                  <div>
+                    <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Patient Age</label>
+                    <input type="text" name="patient_age" value="{% if patient_data %}{{ patient_data.age }}{% endif %}" placeholder="45" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all">
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Patient ID</label>
+                    <input type="text" name="patient_id" value="{% if patient_data %}{{ patient_data.id }}{% endif %}" placeholder="PX-8041A" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all">
+                  </div>
+                  <div>
+                    <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Gender</label>
+                    <input type="text" name="gender" value="{% if patient_data %}{{ patient_data.gender }}{% endif %}" placeholder="Female" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all">
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">DOB</label>
+                    <input type="text" name="dob" value="{% if patient_data %}{{ patient_data.dob }}{% endif %}" placeholder="1981-11-12" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all">
+                  </div>
+                  <div>
+                    <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Referring MD</label>
+                    <input type="text" name="ref_physician" value="{% if patient_data %}{{ patient_data.physician }}{% else %}Dr. Kotilingala{% endif %}" placeholder="Dr. Kotilingala" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all">
+                  </div>
                 </div>
 
                 <div>
-                  <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Patient Age</label>
-                  <input type="text" name="patient_age" placeholder="45" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all">
+                  <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Clinical History</label>
+                  <input type="text" name="history" value="{% if patient_data %}{{ patient_data.history }}{% endif %}" placeholder="Dry cough, mild fatigue" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all">
                 </div>
 
                 <div>
-                  <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Clinician Findings</label>
-                  <textarea name="notes" rows="4" placeholder="Enter diagnostic observations (e.g. no focal consolidations visible / signs of pneumonia)" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all resize-none leading-relaxed"></textarea>
+                  <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Clinician Observations</label>
+                  <textarea name="notes" rows="3" placeholder="Enter findings (e.g. no focal consolidations visible / signs of pneumonia)" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all resize-none leading-relaxed"></textarea>
                 </div>
 
                 <!-- Side-by-Side buttons -->
                 <div class="grid grid-cols-2 gap-3 mt-1">
-                  <!-- Preview Report: White button, teal border/text -->
+                  <!-- Preview Report -->
                   <button type="submit" onclick="submitForm('preview')" class="py-2.5 bg-white hover:bg-slate-50 text-[#0e7490] border border-[#0e7490] font-bold rounded-lg text-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm">
                     <i data-lucide="eye" class="w-4 h-4"></i> Preview Report
                   </button>
-                  <!-- Generate PDF: Solid teal button, white text -->
+                  <!-- Generate PDF -->
                   <button type="submit" onclick="submitForm('download')" class="py-2.5 bg-[#0e7490] hover:bg-[#0c5d73] text-white font-bold rounded-lg text-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm border border-[#0c5d73]">
                     <i data-lucide="file-text" class="w-4 h-4"></i> Generate PDF Report
                   </button>
@@ -506,6 +535,7 @@
       }
     }
 
+    // Interactive button actions
     function toggleInvert() {
       isInverted = !isInverted;
       applyTransforms();
