@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pneumonia Detection - Clinical Diagnostic Portal</title>
-  <!-- Google Fonts: Outfit & Inter -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <title>Clinical PACS Web-Viewer - PneumoniaAI</title>
+  <!-- Inter & ui-monospace fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons CDN -->
@@ -15,20 +15,18 @@
       theme: {
         extend: {
           fontFamily: {
-            outfit: ['Outfit', 'sans-serif'],
-            inter: ['Inter', 'sans-serif'],
+            sans: ['Inter', 'sans-serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
           },
           colors: {
-            clinical: {
-              950: '#0b0f19',
-              900: '#0f172a',
-              800: '#1e293b',
-              700: '#334155',
-              navy: '#1e1b4b',
-              teal: '#0d9488',
-              indigo: '#4f46e5',
-              rose: '#e11d48',
-              emerald: '#10b981',
+            pacs: {
+              950: '#09090b',  /* Zinc 950 */
+              900: '#18181b',  /* Zinc 900 */
+              800: '#27272a',  /* Zinc 800 */
+              700: '#3f3f46',  /* Zinc 700 */
+              accent: '#06b6d4', /* Cyan 500 */
+              warn: '#f59e0b',   /* Amber 500 */
+              normal: '#10b981', /* Emerald 500 */
             }
           }
         }
@@ -36,484 +34,373 @@
     }
   </script>
   <style>
-    /* Custom scrollbar and glassmorphism settings */
+    /* Prevent default scrollbars from drawing attention */
     ::-webkit-scrollbar {
-      width: 6px;
+      width: 4px;
+      height: 4px;
     }
     ::-webkit-scrollbar-track {
-      background: #0f172a;
+      background: #09090b;
     }
     ::-webkit-scrollbar-thumb {
-      background: #334155;
-      border-radius: 4px;
+      background: #27272a;
+      border-radius: 2px;
     }
-    .glass-card {
-      background: rgba(30, 41, 59, 0.55);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    /* Medical Viewport Image Filters */
+    .pacs-image {
+      transition: transform 0.2s ease, filter 0.2s ease;
     }
-    .upload-zone {
-      border: 2px dashed rgba(255, 255, 255, 0.15);
-      transition: all 0.3s ease;
-    }
-    .upload-zone:hover {
-      border-color: #6366f1;
-      background: rgba(99, 102, 241, 0.05);
-    }
-    .active-tab {
-      background: linear-gradient(90deg, #4f46e5, #0d9488);
-      color: white;
+    .inverted {
+      filter: invert(1) !important;
     }
   </style>
 </head>
-<body class="bg-clinical-950 text-slate-200 font-inter min-height-screen">
+<body class="bg-pacs-950 text-zinc-300 font-sans min-h-screen flex flex-col selection:bg-pacs-accent selection:text-pacs-950 select-none">
 
-  <div class="container mx-auto px-4 py-8 max-w-6xl">
+  <!-- TOP MENU BAR (PACS Style) -->
+  <header class="bg-pacs-900 border-b border-pacs-850 px-4 py-2 flex items-center justify-between text-xs font-mono h-12 flex-shrink-0">
+    <div class="flex items-center gap-3">
+      <div class="flex items-center gap-1.5 text-pacs-accent">
+        <i data-lucide="shield-alert" class="w-4 h-4"></i>
+        <span class="font-bold tracking-tight text-sm">PneumoniaAI PACS</span>
+      </div>
+      <div class="h-4 w-px bg-pacs-800"></div>
+      <div class="text-zinc-500">Gateway: <span class="text-pacs-normal">ONLINE</span></div>
+      <div class="text-zinc-500">Node: <span class="text-zinc-300">CLINICAL-CPU-INF</span></div>
+    </div>
     
-    <!-- HEADER BAR -->
-    <header class="flex flex-col md:flex-row items-center justify-between mb-8 pb-6 border-b border-slate-800">
-      <div class="flex items-center gap-3 mb-4 md:mb-0">
-        <div class="p-3 bg-gradient-to-tr from-clinical-indigo to-clinical-teal rounded-xl text-white shadow-lg shadow-indigo-500/20">
-          <i data-lucide="activity" class="w-8 h-8"></i>
-        </div>
-        <div>
-          <h1 class="font-outfit font-extrabold text-2xl md:text-3xl text-white tracking-tight">PneumoniaAI</h1>
-          <p class="text-xs text-slate-400 font-medium tracking-wide">CLINICAL SCREENING & DECISION SUPPORT SYSTEM</p>
-        </div>
+    <div class="flex items-center gap-4">
+      <div class="text-zinc-500 flex items-center gap-1">
+        <i data-lucide="user" class="w-3.5 h-3.5 text-zinc-400"></i>
+        <span>Active User: <span class="text-zinc-300">Dr. Kotilingala</span></span>
       </div>
-      
-      <!-- Tab Controls -->
-      <div class="flex gap-2 bg-slate-900/60 p-1.5 rounded-xl border border-slate-800">
-        <button onclick="switchTab('diagnostic')" id="tab-btn-diagnostic" class="active-tab px-4 py-2 rounded-lg text-xs md:text-sm font-semibold transition-all duration-200 flex items-center gap-2">
-          <i data-lucide="layers" class="w-4 h-4"></i> Diagnostic Hub
-        </button>
-        <button onclick="switchTab('metrics')" id="tab-btn-metrics" class="px-4 py-2 rounded-lg text-xs md:text-sm font-semibold text-slate-400 hover:text-white transition-all duration-200 flex items-center gap-2">
-          <i data-lucide="bar-chart-2" class="w-4 h-4"></i> Model Metrics
-        </button>
-        <button onclick="switchTab('guide')" id="tab-btn-guide" class="px-4 py-2 rounded-lg text-xs md:text-sm font-semibold text-slate-400 hover:text-white transition-all duration-200 flex items-center gap-2">
-          <i data-lucide="book-open" class="w-4 h-4"></i> Clinician Guide
-        </button>
+      <div class="h-4 w-px bg-pacs-800"></div>
+      <div class="text-zinc-500 flex items-center gap-1">
+        <i data-lucide="database" class="w-3.5 h-3.5 text-zinc-400"></i>
+        <span>Local Database (624 Cases)</span>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <!-- CONTENT TABS -->
-    <main>
-      
-      <!-- TAB 1: DIAGNOSTIC HUB -->
-      <section id="tab-diagnostic" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+  <!-- MAIN WORKSPACE -->
+  <main class="flex flex-grow overflow-hidden">
+
+    <!-- COLUMN 1: PATIENT WORKLIST (3/12 wide) -->
+    <section class="w-80 bg-pacs-900 border-r border-pacs-800 flex flex-col flex-shrink-0">
+      <div class="p-3 border-b border-pacs-800 bg-pacs-950 flex items-center justify-between">
+        <span class="font-mono text-xs font-bold text-zinc-400 uppercase tracking-wider">Patient Worklist</span>
+        <span class="bg-pacs-800 px-2 py-0.5 rounded text-[10px] font-mono text-zinc-400">Modality: DX</span>
+      </div>
+
+      <div class="p-3 border-b border-pacs-800 flex flex-col gap-2.5">
+        <!-- New study loader dropzone -->
+        <form action="/predict" method="POST" enctype="multipart/form-data">
+          <label class="group border border-dashed border-pacs-700 hover:border-pacs-accent rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer transition-all duration-200 bg-pacs-950/40">
+            <input type="file" name="file" class="hidden" required onchange="this.form.submit()">
+            <i data-lucide="plus-circle" class="w-5 h-5 text-zinc-500 group-hover:text-pacs-accent mb-1.5 transition-colors duration-200"></i>
+            <span class="text-[11px] font-semibold text-zinc-400 group-hover:text-pacs-accent transition-colors duration-200">Ingest New Study File</span>
+            <span class="text-[9px] text-zinc-600 mt-0.5">JPEG, PNG, WebP (Max 16MB)</span>
+          </label>
+        </form>
+      </div>
+
+      <!-- Scrollable Patients List -->
+      <div class="flex-grow overflow-y-auto p-2 flex flex-col gap-1.5">
         
-        <!-- Left: Upload & Preset zone (7 cols) -->
-        <div class="lg:col-span-7 flex flex-col gap-8">
-          
-          <!-- Diagnostics inputs -->
-          <div class="glass-card rounded-2xl p-6 flex flex-col gap-6">
-            <div>
-              <h2 class="font-outfit font-semibold text-lg text-white mb-1">Radiograph Evaluation Portal</h2>
-              <p class="text-sm text-slate-400">Ingest chest X-ray scans to trigger automated anomaly classification.</p>
+        <!-- preset sample 1 -->
+        <form action="/predict" method="POST">
+          <input type="hidden" name="sample_name" value="normal">
+          <button type="submit" class="w-full text-left p-3 rounded-lg border border-pacs-800 bg-pacs-950/60 hover:bg-pacs-950 hover:border-pacs-accent transition-all duration-200 flex flex-col gap-1.5 group">
+            <div class="flex items-center justify-between w-full font-mono text-[10px]">
+              <span class="text-zinc-500">ID: PX-8041A</span>
+              <span class="px-1.5 py-0.2 bg-pacs-800 text-zinc-400 rounded">DX-RAD</span>
             </div>
+            <div class="text-xs font-semibold text-zinc-200 group-hover:text-pacs-accent transition-colors duration-200">Patient: Case Normal</div>
+            <div class="flex items-center justify-between w-full text-[10px] text-zinc-500">
+              <span>DOB: 1981-11-12</span>
+              <span class="text-pacs-normal">Unread</span>
+            </div>
+          </button>
+        </form>
+
+        <!-- preset sample 2 -->
+        <form action="/predict" method="POST">
+          <input type="hidden" name="sample_name" value="pneumonia">
+          <button type="submit" class="w-full text-left p-3 rounded-lg border border-pacs-800 bg-pacs-950/60 hover:bg-pacs-950 hover:border-pacs-accent transition-all duration-200 flex flex-col gap-1.5 group">
+            <div class="flex items-center justify-between w-full font-mono text-[10px]">
+              <span class="text-zinc-500">ID: PX-4752B</span>
+              <span class="px-1.5 py-0.2 bg-pacs-800 text-zinc-400 rounded">DX-RAD</span>
+            </div>
+            <div class="text-xs font-semibold text-zinc-200 group-hover:text-pacs-accent transition-colors duration-200">Patient: Case Pneumonia</div>
+            <div class="flex items-center justify-between w-full text-[10px] text-zinc-500">
+              <span>DOB: 1974-05-18</span>
+              <span class="text-pacs-normal">Unread</span>
+            </div>
+          </button>
+        </form>
+
+        <!-- mock studies for realistic appearance -->
+        <div class="p-3 rounded-lg border border-pacs-800/40 opacity-40 flex flex-col gap-1.5 text-xs">
+          <div class="flex justify-between w-full font-mono text-[10px] text-zinc-600">
+            <span>ID: PX-1284C</span>
+            <span>DX-RAD</span>
+          </div>
+          <div class="font-semibold text-zinc-400">Patient: Sarah Jenkins</div>
+          <div class="flex justify-between w-full text-[10px] text-zinc-600">
+            <span>DOB: 1993-02-28</span>
+            <span>Completed</span>
+          </div>
+        </div>
+
+        <div class="p-3 rounded-lg border border-pacs-800/40 opacity-40 flex flex-col gap-1.5 text-xs">
+          <div class="flex justify-between w-full font-mono text-[10px] text-zinc-600">
+            <span>ID: PX-9051D</span>
+            <span>DX-RAD</span>
+          </div>
+          <div class="font-semibold text-zinc-400">Patient: Robert Martinez</div>
+          <div class="flex justify-between w-full text-[10px] text-zinc-600">
+            <span>DOB: 1968-09-04</span>
+            <span>Completed</span>
+          </div>
+        </div>
+
+      </div>
+      
+      <!-- Metrics overview bottom panel -->
+      <div class="p-3 border-t border-pacs-800 bg-pacs-950 font-mono text-[10px] text-zinc-500 flex flex-col gap-1">
+        <div>Model Inference: <span class="text-zinc-300">ONNX-CPU</span></div>
+        <div>Verified Accuracy: <span class="text-pacs-accent">82.05%</span></div>
+        <div>Inference Latency: <span class="text-pacs-normal">< 100ms</span></div>
+      </div>
+    </section>
+
+    <!-- COLUMN 2: DIAGNOSTIC VIEWPORT (Center, 6/12 wide) -->
+    <section class="flex-grow bg-black flex flex-col border-r border-pacs-800 relative">
+      
+      <!-- Viewport Header Toolbar -->
+      <div class="bg-pacs-900 border-b border-pacs-800 h-10 px-4 flex items-center justify-between text-xs font-mono select-none">
+        <span class="text-zinc-400 font-bold tracking-tight">Active Viewport</span>
+        
+        <!-- Manipulation buttons (Fully Functional) -->
+        <div class="flex items-center gap-2">
+          <button onclick="toggleInvert()" title="Invert Contrast" class="p-1.5 bg-pacs-800 hover:bg-pacs-700 text-zinc-300 rounded border border-pacs-700 hover:border-pacs-accent transition-all flex items-center gap-1.5">
+            <i data-lucide="eye" class="w-3.5 h-3.5"></i> Invert
+          </button>
+          <button onclick="toggleFlip()" title="Flip Horizontal" class="p-1.5 bg-pacs-800 hover:bg-pacs-700 text-zinc-300 rounded border border-pacs-700 hover:border-pacs-accent transition-all flex items-center gap-1.5">
+            <i data-lucide="flip-horizontal" class="w-3.5 h-3.5"></i> Flip
+          </button>
+          <button onclick="rotateImage()" title="Rotate 90" class="p-1.5 bg-pacs-800 hover:bg-pacs-700 text-zinc-300 rounded border border-pacs-700 hover:border-pacs-accent transition-all flex items-center gap-1.5">
+            <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i> Rotate
+          </button>
+          <button onclick="toggleAnnotations()" title="Toggle Overlays" class="p-1.5 bg-pacs-800 hover:bg-pacs-700 text-zinc-300 rounded border border-pacs-700 hover:border-pacs-accent transition-all flex items-center gap-1.5">
+            <i data-lucide="info" class="w-3.5 h-3.5"></i> Overlays
+          </button>
+          <button onclick="resetImage()" title="Reset Image" class="p-1.5 bg-pacs-800 hover:bg-pacs-700 text-zinc-300 rounded border border-pacs-700 hover:border-pacs-accent transition-all flex items-center gap-1.5">
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Reset
+          </button>
+        </div>
+      </div>
+
+      <!-- MAIN VIEWER PORT -->
+      <div class="flex-grow flex items-center justify-center p-8 relative overflow-hidden bg-[#070707]">
+        
+        {% if prediction %}
+          <div class="relative w-full h-full max-w-[500px] max-h-[500px] border border-pacs-800 bg-black flex items-center justify-center shadow-2xl">
+            <img id="viewport-image" src="{{ img_path }}" class="pacs-image max-w-full max-h-full object-contain" alt="DICOM radiograph scan">
             
-            <!-- Standard File Upload Form -->
-            <form action="/predict" method="POST" enctype="multipart/form-data" class="flex flex-col gap-4">
-              <label class="upload-zone rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer relative group">
-                <input type="file" name="file" class="hidden" required onchange="handleFileSelect(this)">
-                <div class="p-4 bg-slate-900/80 rounded-full text-indigo-400 group-hover:scale-110 transition-all duration-300 mb-3">
-                  <i data-lucide="upload-cloud" class="w-8 h-8"></i>
-                </div>
-                <span id="file-label" class="text-sm font-semibold text-slate-200">Drag & drop radiograph or click to browse</span>
-                <span class="text-xs text-slate-500 mt-1">PNG, JPG, JPEG (Max 16MB)</span>
-              </label>
+            <!-- DICOM HUD TEXT OVERLAYS (Toggleable) -->
+            <div id="dicom-overlays" class="absolute inset-0 p-3 font-mono text-[10px] text-pacs-warn tracking-tight pointer-events-none flex flex-col justify-between">
               
-              <button type="submit" class="w-full py-3 bg-gradient-to-r from-clinical-indigo to-clinical-indigo/90 hover:from-clinical-indigo hover:to-clinical-teal text-white rounded-xl text-sm font-semibold transition-all duration-200 shadow-md shadow-indigo-600/10 flex items-center justify-center gap-2">
-                <i data-lucide="zap" class="w-4 h-4"></i> Run Diagnostic Inference
-              </button>
-            </form>
+              <!-- Upper Row -->
+              <div class="flex justify-between w-full">
+                <!-- Patient Info -->
+                <div class="flex flex-col gap-0.5">
+                  <div>ID: PX-{{ img_path.split('_')[-1].split('.')[0].upper() }}</div>
+                  <div>Modality: DX (CR)</div>
+                  <div>DOB: 1981-11-12</div>
+                </div>
+                <!-- Institution Info -->
+                <div class="flex flex-col items-end gap-0.5">
+                  <div>AI DIAGNOSTIC IMAGING LAB</div>
+                  <div>Acc: {{ img_path.split('/')[-1][:12] }}</div>
+                  <div>Date: 2026-07-06</div>
+                </div>
+              </div>
 
-            <div class="relative flex py-2 items-center">
-              <div class="flex-grow border-t border-slate-800"></div>
-              <span class="flex-shrink mx-4 text-slate-500 text-xs font-semibold uppercase tracking-wider">OR CHOOSE A CLINICAL SAMPLE</span>
-              <div class="flex-grow border-t border-slate-800"></div>
-            </div>
+              <!-- Center Indicators -->
+              <div class="flex justify-between items-center w-full px-6 flex-grow">
+                <div class="text-sm font-bold opacity-60">L</div>
+                <div class="text-sm font-bold opacity-60">R</div>
+              </div>
 
-            <!-- Clickable Preset Samples -->
-            <div class="grid grid-cols-2 gap-4">
-              <form action="/predict" method="POST" class="w-full">
-                <input type="hidden" name="sample_name" value="normal">
-                <button type="submit" class="w-full text-left p-3.5 bg-slate-900/60 hover:bg-slate-900 rounded-xl border border-slate-800 hover:border-slate-700 transition-all duration-200 flex items-center gap-3 group">
-                  <div class="w-12 h-12 bg-clinical-emerald/10 border border-clinical-emerald/20 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center">
-                    <i data-lucide="check-circle-2" class="w-6 h-6 text-clinical-emerald"></i>
-                  </div>
-                  <div class="flex-grow">
-                    <div class="text-xs font-semibold text-white group-hover:text-clinical-emerald transition-colors duration-200">Sample Healthy</div>
-                    <div class="text-[10px] text-slate-500">Normal Lung Anatomy</div>
-                  </div>
-                  <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:translate-x-1 transition-transform duration-200"></i>
-                </button>
-              </form>
+              <!-- Lower Row -->
+              <div class="flex justify-between w-full">
+                <!-- Parameters -->
+                <div class="flex flex-col gap-0.5">
+                  <div>Im: 1 / 1</div>
+                  <div>KVp: 120.0</div>
+                  <div>Preprocessed: Pillow Bilinear</div>
+                </div>
+                <!-- Zoom / Contrast -->
+                <div class="flex flex-col items-end gap-0.5">
+                  <div>Zoom: 100%</div>
+                  <div>WL: 127 / WW: 256</div>
+                  <div>Inference Engine: ONNX-CPU</div>
+                </div>
+              </div>
 
-              <form action="/predict" method="POST" class="w-full">
-                <input type="hidden" name="sample_name" value="pneumonia">
-                <button type="submit" class="w-full text-left p-3.5 bg-slate-900/60 hover:bg-slate-900 rounded-xl border border-slate-800 hover:border-slate-700 transition-all duration-200 flex items-center gap-3 group">
-                  <div class="w-12 h-12 bg-clinical-rose/10 border border-clinical-rose/20 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center">
-                    <i data-lucide="alert-octagon" class="w-6 h-6 text-clinical-rose"></i>
-                  </div>
-                  <div class="flex-grow">
-                    <div class="text-xs font-semibold text-white group-hover:text-clinical-rose transition-colors duration-200">Sample Infected</div>
-                    <div class="text-[10px] text-slate-500">Pneumonia Infiltrates</div>
-                  </div>
-                  <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:translate-x-1 transition-transform duration-200"></i>
-                </button>
-              </form>
             </div>
           </div>
+        {% else %}
+          <!-- Empty Viewport Welcome State -->
+          <div class="text-center font-mono text-zinc-600 flex flex-col items-center gap-3">
+            <i data-lucide="scan" class="w-12 h-12 text-zinc-700 animate-pulse"></i>
+            <div class="text-xs uppercase tracking-wider font-semibold">Diagnostic Viewport Inactive</div>
+            <div class="text-[10px] text-zinc-700 max-w-xs">Select a patient study case from the worklist or upload a new radiograph file to initialize inference.</div>
+          </div>
+        {% endif %}
+
+      </div>
+
+    </section>
+
+    <!-- COLUMN 3: REPORT & ANALYSIS PANEL (3/12 wide) -->
+    <section class="w-80 bg-pacs-900 flex flex-col flex-shrink-0">
+      
+      <div class="p-3 border-b border-pacs-800 bg-pacs-950 font-mono text-xs font-bold text-zinc-400 uppercase tracking-wider">
+        AI Report & Documentation
+      </div>
+
+      <div class="p-4 flex-grow overflow-y-auto flex flex-col gap-6">
+        
+        <!-- Model Diagnostic Report -->
+        <div class="flex flex-col gap-3">
+          <div class="text-xs font-semibold text-zinc-400">1. AI Screening Outcome</div>
           
-          <!-- Errors banner -->
-          {% if error %}
-          <div class="p-4 bg-clinical-rose/10 border border-clinical-rose/20 rounded-xl text-clinical-rose text-sm flex items-center gap-2">
-            <i data-lucide="alert-circle" class="w-5 h-5 flex-shrink-0"></i>
-            <span><strong>Diagnostic Failure:</strong> {{ error }}</span>
-          </div>
+          {% if prediction %}
+            <div class="p-4 rounded-lg bg-black border border-pacs-800 flex flex-col gap-3">
+              <div class="flex items-center justify-between border-b border-pacs-850 pb-2">
+                <span class="text-[10px] font-mono text-zinc-500 uppercase">CLASSIFICATION</span>
+                <span class="px-2 py-0.5 text-xs font-mono font-bold rounded {% if prediction == 'NORMAL' %}bg-pacs-normal/20 text-pacs-normal{% else %}bg-clinical-rose/20 text-clinical-rose{% endif %}">
+                  {{ prediction }}
+                </span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-mono text-zinc-500 uppercase">CONFIDENCE</span>
+                <span class="text-xs font-mono font-bold text-white">{{ confidence }}</span>
+              </div>
+              
+              <!-- Subtle technical score progress bar -->
+              <div class="w-full bg-pacs-800 h-1.5 rounded-full mt-1">
+                <div class="h-1.5 rounded-full {% if prediction == 'NORMAL' %}bg-pacs-normal{% else %}bg-clinical-rose{% endif %}" style="width: {{ confidence }}"></div>
+              </div>
+            </div>
+          {% else %}
+            <div class="p-4 rounded-lg border border-pacs-800 border-dashed text-center text-xs font-mono text-zinc-600">
+              Awaiting model scoring...
+            </div>
           {% endif %}
         </div>
 
-        <!-- Right: Diagnostic Output & Clinical PDF Report Generator (5 cols) -->
-        <div class="lg:col-span-5">
+        <!-- Clinical PDF Report parameters -->
+        <div class="flex flex-col gap-3">
+          <div class="text-xs font-semibold text-zinc-400">2. Generate Case Report PDF</div>
           
-          <div class="glass-card rounded-2xl p-6 flex flex-col gap-6 h-full justify-between">
-            <div>
-              <h2 class="font-outfit font-semibold text-lg text-white mb-1">Diagnostic Output</h2>
-              <p class="text-sm text-slate-400">Model outputs, confidence percentages, and dynamic case documentation.</p>
-            </div>
-            
-            {% if prediction %}
-              <div class="flex flex-col gap-6 flex-grow justify-center py-4">
-                
-                <!-- Prediction result box -->
-                <div class="p-4 rounded-xl border flex items-center justify-between {% if prediction == 'NORMAL' %}bg-clinical-emerald/10 border-clinical-emerald/20 text-clinical-emerald{% else %}bg-clinical-rose/10 border-clinical-rose/20 text-clinical-rose{% endif %}">
-                  <div class="flex items-center gap-3">
-                    <div class="p-2.5 rounded-lg {% if prediction == 'NORMAL' %}bg-clinical-emerald/20{% else %}bg-clinical-rose/20{% endif %}">
-                      <i data-lucide="{% if prediction == 'NORMAL' %}shield-check{% else %}activity-square{% endif %}" class="w-6 h-6"></i>
-                    </div>
-                    <div>
-                      <div class="text-[10px] uppercase font-bold tracking-wider opacity-60">MODEL RESULT</div>
-                      <div class="font-outfit font-extrabold text-xl">{{ prediction }}</div>
-                    </div>
-                  </div>
-                  <div class="text-right">
-                    <div class="text-[10px] uppercase font-bold tracking-wider opacity-60">CONFIDENCE</div>
-                    <div class="font-outfit font-bold text-xl">{{ confidence }}</div>
-                  </div>
-                </div>
+          {% if prediction %}
+            <form action="/generate_report" method="POST" class="flex flex-col gap-3.5">
+              <input type="hidden" name="prediction" value="{{ prediction }}">
+              <input type="hidden" name="confidence" value="{{ confidence }}">
+              <input type="hidden" name="img_path" value="{{ img_path }}">
 
-                <!-- Image preview -->
-                <div class="rounded-xl overflow-hidden border border-slate-800 aspect-video relative bg-slate-950 flex items-center justify-center">
-                  <img src="{{ img_path }}" class="object-contain w-full h-full" alt="Uploaded radiograph preview">
-                  <div class="absolute bottom-2 right-2 bg-slate-900/80 px-2 py-1 rounded text-[10px] font-semibold uppercase tracking-wider text-slate-400 border border-slate-800">SCAN IMAGE</div>
-                </div>
-
-                <!-- Patient report generator details -->
-                <form action="/generate_report" method="POST" class="flex flex-col gap-4 border-t border-slate-800 pt-4 mt-2">
-                  <input type="hidden" name="prediction" value="{{ prediction }}">
-                  <input type="hidden" name="confidence" value="{{ confidence }}">
-                  <input type="hidden" name="img_path" value="{{ img_path }}">
-                  
-                  <div class="grid grid-cols-2 gap-3">
-                    <div>
-                      <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Patient Name</label>
-                      <input type="text" name="patient_name" placeholder="John Doe" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-clinical-indigo">
-                    </div>
-                    <div>
-                      <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Patient Age</label>
-                      <input type="text" name="patient_age" placeholder="45" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-clinical-indigo">
-                    </div>
-                  </div>
-
-                  <div>
-                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Clinician Findings & Observations</label>
-                    <textarea name="notes" rows="2" placeholder="Describe radiograph observations (e.g. consolidations, patches, normal clear lungs)..." class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-clinical-indigo resize-none"></textarea>
-                  </div>
-
-                  <button type="submit" class="w-full py-2.5 bg-gradient-to-r from-clinical-teal to-clinical-teal/90 hover:from-clinical-teal hover:to-clinical-indigo text-white rounded-xl text-xs font-semibold transition-all duration-200 flex items-center justify-center gap-2">
-                    <i data-lucide="file-text" class="w-4 h-4"></i> Download Case Clinical Report PDF
-                  </button>
-                </form>
+              <div class="flex flex-col gap-1.5">
+                <label class="text-[9px] font-mono text-zinc-500 uppercase">Patient Name</label>
+                <input type="text" name="patient_name" placeholder="John Doe" class="w-full bg-black border border-pacs-800 rounded p-2 text-xs text-white focus:outline-none focus:border-pacs-accent font-mono">
               </div>
-            {% else %}
-              <div class="flex flex-col items-center justify-center flex-grow py-12 text-slate-500 gap-3 border border-dashed border-slate-800 rounded-xl my-4">
-                <i data-lucide="activity-square" class="w-12 h-12 text-slate-600"></i>
-                <div class="text-xs text-slate-400">Awaiting Ingested Chest Radiograph</div>
-                <div class="text-[10px] text-slate-600 text-center px-6">Upload an image file or choose one of our clinical samples on the left to activate classification.</div>
-              </div>
-            {% endif %}
-            
-            <div class="text-[10px] text-slate-500 text-center border-t border-slate-800/50 pt-3">
-              Automated classification using fine-tuned ResNet-18. General Practitioner decision support only.
-            </div>
-          </div>
 
+              <div class="flex flex-col gap-1.5">
+                <label class="text-[9px] font-mono text-zinc-500 uppercase">Patient Age</label>
+                <input type="text" name="patient_age" placeholder="45" class="w-full bg-black border border-pacs-800 rounded p-2 text-xs text-white focus:outline-none focus:border-pacs-accent font-mono">
+              </div>
+
+              <div class="flex flex-col gap-1.5">
+                <label class="text-[9px] font-mono text-zinc-500 uppercase">Clinician Findings</label>
+                <textarea name="notes" rows="4" placeholder="Enter findings (e.g. no focal consolidations visible / signs of infiltrative patches in lower lobes)..." class="w-full bg-black border border-pacs-800 rounded p-2 text-xs text-white focus:outline-none focus:border-pacs-accent resize-none font-mono"></textarea>
+              </div>
+
+              <button type="submit" class="w-full py-2.5 bg-pacs-accent hover:bg-pacs-accent/90 text-pacs-950 font-bold rounded text-xs transition-colors flex items-center justify-center gap-1.5 shadow-md shadow-cyan-900/10">
+                <i data-lucide="file-text" class="w-4 h-4"></i> Download Diagnostic PDF
+              </button>
+            </form>
+          {% else %}
+            <div class="p-4 rounded-lg border border-pacs-800 border-dashed text-center text-xs font-mono text-zinc-600">
+              Form disabled until image inference completes.
+            </div>
+          {% endif %}
         </div>
 
-      </section>
+      </div>
+      
+      <!-- Footer disclaimer block -->
+      <div class="p-3.5 border-t border-pacs-800 bg-pacs-950 font-mono text-[9px] text-zinc-600 leading-normal">
+        <strong>Disclaimer:</strong> Decision support tool. For clinical review only. PDF report signature required by certified radiologist.
+      </div>
+    </section>
 
-      <!-- TAB 2: MODEL METRICS -->
-      <section id="tab-metrics" class="hidden flex flex-col gap-8">
-        
-        <!-- Metrics Stats Row -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div class="glass-card rounded-2xl p-5 flex flex-col gap-1">
-            <div class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Test Set Accuracy</div>
-            <div class="font-outfit font-extrabold text-3xl text-white">82.05%</div>
-            <div class="text-[10px] text-slate-500 mt-1">Verified over 624 clinical scans</div>
-          </div>
-          <div class="glass-card rounded-2xl p-5 flex flex-col gap-1">
-            <div class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Inference Speed</div>
-            <div class="font-outfit font-extrabold text-3xl text-clinical-teal">< 100ms</div>
-            <div class="text-[10px] text-slate-500 mt-1">Optimized ONNX CPU Execution</div>
-          </div>
-          <div class="glass-card rounded-2xl p-5 flex flex-col gap-1">
-            <div class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Model Size</div>
-            <div class="font-outfit font-extrabold text-3xl text-clinical-indigo">44.7 MB</div>
-            <div class="text-[10px] text-slate-500 mt-1">Lightweight ResNet-18 parameters</div>
-          </div>
-          <div class="glass-card rounded-2xl p-5 flex flex-col gap-1">
-            <div class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Memory Footprint</div>
-            <div class="font-outfit font-extrabold text-3xl text-clinical-emerald">< 70 MB</div>
-            <div class="text-[10px] text-slate-500 mt-1">Render cloud-tier compliant</div>
-          </div>
-        </div>
-
-        <!-- Detailed metrics dashboard -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          
-          <!-- Stats breakdown (7 cols) -->
-          <div class="lg:col-span-7 glass-card rounded-2xl p-6 flex flex-col gap-6">
-            <div>
-              <h3 class="font-outfit font-semibold text-lg text-white mb-1">Performance Specification Report</h3>
-              <p class="text-xs text-slate-400">Detailed breakdown of testing accuracy and network architecture parameters.</p>
-            </div>
-            
-            <div class="flex flex-col gap-4">
-              <div>
-                <div class="flex justify-between text-xs font-semibold mb-1">
-                  <span>Generalization Accuracy (Unseen Test Set)</span>
-                  <span class="text-white">82.05% (512/624 Correct)</span>
-                </div>
-                <div class="w-full bg-slate-900 rounded-full h-2">
-                  <div class="bg-gradient-to-r from-clinical-indigo to-clinical-teal h-2 rounded-full" style="width: 82.05%"></div>
-                </div>
-              </div>
-              
-              <div>
-                <div class="flex justify-between text-xs font-semibold mb-1">
-                  <span>Validation Set Accuracy (Small Split)</span>
-                  <span class="text-white">81.25% (13/16 Correct)</span>
-                </div>
-                <div class="w-full bg-slate-900 rounded-full h-2">
-                  <div class="bg-gradient-to-r from-clinical-indigo to-clinical-teal h-2 rounded-full" style="width: 81.25%"></div>
-                </div>
-              </div>
-
-              <div>
-                <div class="flex justify-between text-xs font-semibold mb-1">
-                  <span>CPU Latency Optimization</span>
-                  <span class="text-white">Under 100ms per inference</span>
-                </div>
-                <div class="w-full bg-slate-900 rounded-full h-2">
-                  <div class="bg-gradient-to-r from-clinical-teal to-clinical-emerald h-2 rounded-full" style="width: 95%"></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="border-t border-slate-800 pt-4 flex flex-col gap-3">
-              <h4 class="text-xs font-bold text-white uppercase tracking-wider">Model Training Configuration</h4>
-              <div class="grid grid-cols-2 gap-4 text-xs text-slate-400">
-                <div class="p-3 bg-slate-900/60 border border-slate-800 rounded-lg">
-                  <div class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider mb-0.5">LOSS FUNCTION</div>
-                  <div class="font-semibold text-white">CrossEntropyLoss</div>
-                </div>
-                <div class="p-3 bg-slate-900/60 border border-slate-800 rounded-lg">
-                  <div class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider mb-0.5">OPTIMIZER</div>
-                  <div class="font-semibold text-white">Adam (Learning Rate: 0.001)</div>
-                </div>
-                <div class="p-3 bg-slate-900/60 border border-slate-800 rounded-lg">
-                  <div class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider mb-0.5">TRANSFER LEARNING</div>
-                  <div class="font-semibold text-white">ResNet-18 (Pretrained)</div>
-                </div>
-                <div class="p-3 bg-slate-900/60 border border-slate-800 rounded-lg">
-                  <div class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider mb-0.5">INFERENCE BACKEND</div>
-                  <div class="font-semibold text-white">ONNX Runtime (CPU)</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Confusion Matrix (5 cols) -->
-          <div class="lg:col-span-5 glass-card rounded-2xl p-6 flex flex-col gap-6">
-            <div>
-              <h3 class="font-outfit font-semibold text-lg text-white mb-1">Clinical Confusion Matrix</h3>
-              <p class="text-xs text-slate-400">Overview of true positives and false classifications in clinical test set.</p>
-            </div>
-            
-            <div class="grid grid-cols-3 gap-1 bg-slate-900/60 p-2.5 rounded-xl border border-slate-800 text-center text-xs font-semibold">
-              <div class="p-2"></div>
-              <div class="p-2 text-slate-400 uppercase text-[10px] tracking-wider block font-bold">PRED HEALTHY</div>
-              <div class="p-2 text-slate-400 uppercase text-[10px] tracking-wider block font-bold">PRED INFECTED</div>
-              
-              <div class="p-3 text-slate-400 uppercase text-[10px] tracking-wider flex items-center justify-center font-bold">TRUE HEALTHY</div>
-              <div class="p-4 bg-clinical-emerald/20 text-clinical-emerald rounded-lg border border-clinical-emerald/10 font-bold">
-                <span class="block text-base">206</span>
-                <span class="text-[9px] font-normal block tracking-tight opacity-75">True Negatives</span>
-              </div>
-              <div class="p-4 bg-slate-950 text-slate-400 rounded-lg border border-slate-800">
-                <span class="block text-base">28</span>
-                <span class="text-[9px] font-normal block tracking-tight opacity-75">False Positives</span>
-              </div>
-              
-              <div class="p-3 text-slate-400 uppercase text-[10px] tracking-wider flex items-center justify-center font-bold">TRUE INFECTED</div>
-              <div class="p-4 bg-slate-950 text-slate-400 rounded-lg border border-slate-800">
-                <span class="block text-base">84</span>
-                <span class="text-[9px] font-normal block tracking-tight opacity-75">False Negatives</span>
-              </div>
-              <div class="p-4 bg-clinical-emerald/20 text-clinical-emerald rounded-lg border border-clinical-emerald/10 font-bold">
-                <span class="block text-base">306</span>
-                <span class="text-[9px] font-normal block tracking-tight opacity-75">True Positives</span>
-              </div>
-            </div>
-            
-            <div class="text-[10px] text-slate-500 leading-normal">
-              <strong>Testing Metrics Breakdown:</strong><br>
-              * Sensitivity (Recall for Infected): **78.46%**<br>
-              * Specificity (Accuracy on Healthy): **88.03%**<br>
-              * Positive Predictive Value (Precision): **91.61%**
-            </div>
-          </div>
-
-        </div>
-
-      </section>
-
-      <!-- TAB 3: CLINICIAN GUIDE -->
-      <section id="tab-guide" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-8">
-        
-        <!-- Left: Image guide (6 cols) -->
-        <div class="lg:col-span-6 glass-card rounded-2xl p-6 flex flex-col gap-6">
-          <div>
-            <h3 class="font-outfit font-semibold text-lg text-white mb-1">Spotting Anomalies on Radiographs</h3>
-            <p class="text-xs text-slate-400">Typical markers of pneumonia infections inside lung boundaries.</p>
-          </div>
-          
-          <div class="flex flex-col gap-4">
-            <div class="flex gap-4 items-start">
-              <div class="p-2 bg-clinical-indigo/10 border border-clinical-indigo/20 rounded-lg text-clinical-indigo mt-0.5">
-                <i data-lucide="eye" class="w-5 h-5"></i>
-              </div>
-              <div>
-                <h4 class="text-sm font-semibold text-white">Lung Consolidation</h4>
-                <p class="text-xs text-slate-400 mt-0.5">Healthy lungs show as dark/black voids (since air does not obstruct X-rays). In pneumonia, fluid, pus, or cellular debris fills alveolar cavities, showing as fuzzy white patches (consolidation).</p>
-              </div>
-            </div>
-
-            <div class="flex gap-4 items-start">
-              <div class="p-2 bg-clinical-indigo/10 border border-clinical-indigo/20 rounded-lg text-clinical-indigo mt-0.5">
-                <i data-lucide="scan" class="w-5 h-5"></i>
-              </div>
-              <div>
-                <h4 class="text-sm font-semibold text-white">Interstitial Infiltrates</h4>
-                <p class="text-xs text-slate-400 mt-0.5">Often diffuse in viral pneumonia, presenting as hazy 'ground-glass' patterns or web-like structures spread across lung fields, usually bilateral.</p>
-              </div>
-            </div>
-
-            <div class="flex gap-4 items-start">
-              <div class="p-2 bg-clinical-indigo/10 border border-clinical-indigo/20 rounded-lg text-clinical-indigo mt-0.5">
-                <i data-lucide="binary" class="w-5 h-5"></i>
-              </div>
-              <div>
-                <h4 class="text-sm font-semibold text-white">Costophrenic Angles</h4>
-                <p class="text-xs text-slate-400 mt-0.5">The bottom sharp corners of lung voids. If blunt or cloudy, it suggests fluid buildup (pleural effusion), a common secondary complication of pneumonia.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="p-4 bg-slate-900/60 border border-slate-800 rounded-xl flex items-center gap-3">
-            <i data-lucide="shield-alert" class="w-6 h-6 text-indigo-400 flex-shrink-0"></i>
-            <span class="text-[10px] text-slate-400 leading-normal">
-              <strong>Clinical Note:</strong> AI screening provides a binary probability estimate. High-density structures like bones, implants, breast tissue, or bad posture lines can cause false positives and must be visually excluded.
-            </span>
-          </div>
-        </div>
-
-        <!-- Right: Anatomical comparison (6 cols) -->
-        <div class="lg:col-span-6 glass-card rounded-2xl p-6 flex flex-col gap-6 justify-between">
-          <div>
-            <h3 class="font-outfit font-semibold text-lg text-white mb-1">Visual Side-by-Side Comparison</h3>
-            <p class="text-xs text-slate-400">Radiographic examples of healthy vs. infected lung tissue.</p>
-          </div>
-          
-          <div class="grid grid-cols-2 gap-4 my-2">
-            <div class="flex flex-col gap-2">
-              <div class="rounded-xl overflow-hidden border border-slate-800 aspect-square relative bg-slate-950">
-                <img src="/static/samples/normal.jpeg" class="object-cover w-full h-full" alt="Healthy normal X-ray">
-              </div>
-              <div class="text-center">
-                <span class="text-xs font-semibold text-clinical-emerald">Normal Clear Lungs</span>
-                <span class="block text-[9px] text-slate-500">Sharp black voids, clear borders</span>
-              </div>
-            </div>
-
-            <div class="flex flex-col gap-2">
-              <div class="rounded-xl overflow-hidden border border-slate-800 aspect-square relative bg-slate-950">
-                <img src="/static/samples/pneumonia.jpeg" class="object-cover w-full h-full" alt="Pneumonia infected X-ray">
-              </div>
-              <div class="text-center">
-                <span class="text-xs font-semibold text-clinical-rose">Pneumonia Consolidation</span>
-                <span class="block text-[9px] text-slate-500">Cloudy white patches, blunted borders</span>
-              </div>
-            </div>
-          </div>
-          
-          <div class="text-[10px] text-slate-500 leading-normal border-t border-slate-800/50 pt-3">
-            Reference X-ray images are extracted from the clinical test database. For training details and architecture, check the **Model Metrics** tab.
-          </div>
-        </div>
-
-      </section>
-
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="mt-12 text-center text-xs text-slate-500 border-t border-slate-900/60 pt-6">
-      <p>© 2026 PneumoniaAI Portal. Built with Flask, ONNX Runtime, and ResNet-18.</p>
-      <p class="mt-1 text-[10px] text-slate-600">This tool is a general-purpose AI decision support model. All clinical reports require radiologist verification prior to final patient treatment.</p>
-    </footer>
-
-  </div>
+  </main>
 
   <script>
     // Initialize Lucide icons
     lucide.createIcons();
 
-    // Tab switcher logic
-    function switchTab(tabId) {
-      const tabs = ['diagnostic', 'metrics', 'guide'];
-      tabs.forEach(id => {
-        const tabEl = document.getElementById('tab-' + id);
-        const btnEl = document.getElementById('tab-btn-' + id);
-        
-        if (id === tabId) {
-          tabEl.classList.remove('hidden');
-          btnEl.className = "active-tab px-4 py-2 rounded-lg text-xs md:text-sm font-semibold transition-all duration-200 flex items-center gap-2";
-        } else {
-          tabEl.classList.add('hidden');
-          btnEl.className = "px-4 py-2 rounded-lg text-xs md:text-sm font-semibold text-slate-400 hover:text-white transition-all duration-200 flex items-center gap-2";
-        }
-      });
+    // Image Manipulation States
+    let isInverted = false;
+    let isFlipped = false;
+    let rotationAngle = 0;
+
+    const viewportImage = document.getElementById('viewport-image');
+
+    function applyTransforms() {
+      if (!viewportImage) return;
+      
+      let transformStr = `rotate(${rotationAngle}deg)`;
+      if (isFlipped) {
+        transformStr += ' scaleX(-1)';
+      }
+      viewportImage.style.transform = transformStr;
+      
+      if (isInverted) {
+        viewportImage.classList.add('inverted');
+      } else {
+        viewportImage.classList.remove('inverted');
+      }
     }
 
-    // Update uploader label on file selection
-    function handleFileSelect(input) {
-      const fileLabel = document.getElementById('file-label');
-      if (input.files && input.files[0]) {
-        fileLabel.innerHTML = `Selected File: <span class="text-clinical-indigo font-bold">${input.files[0].name}</span>`;
+    function toggleInvert() {
+      isInverted = !isInverted;
+      applyTransforms();
+    }
+
+    function toggleFlip() {
+      isFlipped = !isFlipped;
+      applyTransforms();
+    }
+
+    function rotateImage() {
+      rotationAngle = (rotationAngle + 90) % 360;
+      applyTransforms();
+    }
+
+    function resetImage() {
+      isInverted = false;
+      isFlipped = false;
+      rotationAngle = 0;
+      applyTransforms();
+    }
+
+    function toggleAnnotations() {
+      const overlays = document.getElementById('dicom-overlays');
+      if (overlays) {
+        overlays.classList.toggle('hidden');
       }
     }
   </script>
