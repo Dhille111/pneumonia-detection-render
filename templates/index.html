@@ -20,20 +20,20 @@
           },
           colors: {
             pacs: {
-              accent: '#1e40af',       /* Deep Medical Blue */
-              hover: '#eff6ff',        /* Very subtle blue hover tint */
-              border: '#e2e8f0',       /* Soft Cool Gray */
-              bg: '#f8fafc',           /* Light Slate Gray */
-              text: '#0f172a',         /* Dark Slate */
-              success: '#166534',      /* Muted Green */
-              successBg: '#f0fdf4',
-              successBorder: '#bbf7d0',
+              accent: '#0e7490',       /* Corporate Dark Teal */
+              hover: '#eef8f6',        /* Light Teal Hover */
+              border: '#e5eaf0',       /* Soft Cool Gray */
+              bg: '#f4f7f9',           /* Realistic Gray Background */
+              text: '#1e293b',         /* Slate 800 */
+              success: '#15803d',      /* Muted Green */
+              successBg: '#edf7f2',    /* Mockup Outcome Green Background */
+              successBorder: '#d3f4e3',
               warn: '#b45309',         /* Amber */
               warnBg: '#fffbeb',
               warnBorder: '#fde68a',
-              error: '#991b1b',        /* Muted Red */
-              errorBg: '#fef2f2',
-              errorBorder: '#fee2e2',
+              error: '#b91c1c',        /* Muted Red */
+              errorBg: '#fdf2f2',
+              errorBorder: '#fde8e8',
             }
           }
         }
@@ -47,7 +47,7 @@
       height: 6px;
     }
     ::-webkit-scrollbar-track {
-      background: #f8fafc;
+      background: #f4f7f9;
     }
     ::-webkit-scrollbar-thumb {
       background: #cbd5e1;
@@ -62,47 +62,52 @@
     }
   </style>
 </head>
-<body class="bg-[#f8fafc] text-pacs-text font-sans h-screen flex select-none overflow-hidden">
+<body class="bg-[#f4f7f9] text-pacs-text font-sans h-screen flex select-none overflow-hidden">
 
-  <!-- COLUMN 1: LEFT NAVIGATION SIDEBAR (Hospital Management Sidebar) -->
+  <!-- COLUMN 1: LEFT NAVIGATION SIDEBAR -->
   <aside class="w-60 bg-white border-r border-pacs-border flex flex-col justify-between flex-shrink-0 z-20">
     <div class="flex flex-col gap-6">
       
-      <!-- Brand Logo -->
-      <div class="px-5 py-4 flex items-center gap-2.5">
-        <div class="p-1.5 bg-blue-600 rounded text-white shadow-sm flex items-center justify-center">
-          <i data-lucide="activity" class="w-5 h-5"></i>
-        </div>
+      <!-- Brand Logo (Custom Vector Lungs matching Mockup exactly) -->
+      <div class="px-5 py-4 flex items-center gap-2">
+        <svg class="w-8 h-8 flex-shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Left Lobe -->
+          <path d="M11 4.5c0-.8-.7-1.3-1.4-.8C7.5 5.2 5.5 7.5 5.5 10c0 3.2 2.2 5.5 4.7 5.5.4 0 .8-.3.8-.7V4.5z" fill="#0284c7"/>
+          <!-- Right Lobe -->
+          <path d="M13 4.5c0-.8.7-1.3 1.4-.8C16.5 5.2 18.5 7.5 18.5 10c0 3.2-2.2 5.5-4.7 5.5-.4 0-.8-.3-.8-.7V4.5z" fill="#0ea5e9" opacity="0.85"/>
+          <!-- Trachea -->
+          <path d="M12 11V15c0 .3-.2.5-.5.5h-1c-.3 0-.5-.2-.5-.5V11" stroke="#0284c7" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
         <div>
           <h1 class="font-bold text-sm text-slate-800 tracking-tight leading-none">PneumoniaAI</h1>
-          <span class="text-[10px] text-slate-400 font-mono tracking-wide">PACS Module</span>
+          <span class="text-[9px] text-slate-400 font-semibold tracking-wide">PACS Module</span>
         </div>
       </div>
 
       <!-- Navigation Links -->
       <nav class="px-3 flex flex-col gap-1 text-xs font-semibold">
-        <a href="#" class="flex items-center gap-3 px-3 py-2 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150">
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150">
           <i data-lucide="layout-grid" class="w-4 h-4"></i> Dashboard
         </a>
-        <a href="#" class="flex items-center gap-3 px-3 py-2 bg-blue-50 text-blue-700 border-l-4 border-blue-600 rounded-r-lg transition-all duration-150">
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 bg-[#eaf5f2] text-[#0e7490] border-l-4 border-l-[#0e7490] rounded-r-lg transition-all duration-150">
           <i data-lucide="clipboard-list" class="w-4 h-4"></i> Study Worklist
         </a>
-        <a href="#" class="flex items-center gap-3 px-3 py-2 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150">
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150">
           <i data-lucide="scan-eye" class="w-4 h-4"></i> AI Screening
         </a>
-        <a href="#" class="flex items-center gap-3 px-3 py-2 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150">
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150">
           <i data-lucide="files" class="w-4 h-4"></i> Reports
         </a>
-        <a href="#" class="flex items-center gap-3 px-3 py-2 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150">
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150">
           <i data-lucide="users" class="w-4 h-4"></i> Patients
         </a>
-        <a href="#" class="flex items-center gap-3 px-3 py-2 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150">
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150">
           <i data-lucide="bar-chart-3" class="w-4 h-4"></i> Analytics
         </a>
-        <a href="#" class="flex items-center gap-3 px-3 py-2 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150">
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150">
           <i data-lucide="settings" class="w-4 h-4"></i> Settings
         </a>
-        <a href="#" class="flex items-center gap-3 px-3 py-2 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150">
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-all duration-150">
           <i data-lucide="database" class="w-4 h-4"></i> System Logs
         </a>
       </nav>
@@ -114,17 +119,17 @@
         <div class="font-semibold text-slate-500">AI Model</div>
         <div class="text-slate-400 text-[9px] mt-0.5">ResNet-18 ONNX</div>
       </div>
-      <div class="flex items-center gap-1.5 text-pacs-success">
-        <span class="w-1.5 h-1.5 rounded-full bg-pacs-success"></span> System Healthy
+      <div class="flex items-center gap-1.5 text-green-600 font-semibold">
+        <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span> System Healthy
       </div>
     </div>
   </aside>
 
-  <!-- MAIN AREA (Contains Top Header and Three-Column grid body) -->
-  <div class="flex-1 flex flex-col overflow-hidden">
+  <!-- MAIN AREA -->
+  <div class="flex-grow flex flex-col overflow-hidden">
     
     <!-- TOP HEADER -->
-    <header class="h-14 bg-white border-b border-pacs-border px-6 flex items-center justify-between text-xs font-semibold flex-shrink-0 z-10">
+    <header class="h-14 bg-white border-b border-pacs-border px-6 flex items-center justify-between text-xs font-semibold flex-shrink-0 z-10 shadow-sm">
       <div class="flex items-center gap-4">
         <div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-green-50 text-green-700 border border-green-200 text-[10px] font-bold">
           <span class="w-1.5 h-1.5 rounded-full bg-green-600"></span> Connected
@@ -144,14 +149,14 @@
           </div>
           <div class="flex flex-col text-left">
             <span class="text-slate-800 font-bold leading-tight">Dr. Kotilingala</span>
-            <span class="text-[9px] text-slate-400 leading-none">Radiologist</span>
+            <span class="text-[9px] text-slate-400 leading-none font-medium">Radiologist</span>
           </div>
           <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400"></i>
         </div>
       </div>
     </header>
 
-    <!-- COLUMN BODY GRID (Contains Patient worklist, Image viewer, AI report panels) -->
+    <!-- COLUMN BODY GRID -->
     <div class="flex-grow flex p-6 gap-6 overflow-hidden">
 
       <!-- COLUMN 2: PATIENT STUDY WORKLIST -->
@@ -165,10 +170,10 @@
 
         <!-- Ingest loader drag-box -->
         <form action="/predict" method="POST" enctype="multipart/form-data" class="px-4 py-3">
-          <label class="group border border-dashed border-slate-300 hover:border-blue-600 rounded-lg p-5 flex flex-col items-center justify-center cursor-pointer transition-all duration-150 bg-slate-50/50 hover:bg-blue-50/10">
+          <label class="group border border-dashed border-slate-300 hover:border-[#0e7490] rounded-lg p-5 flex flex-col items-center justify-center cursor-pointer transition-all duration-150 bg-slate-50/50 hover:bg-[#eef8f6]/30">
             <input type="file" name="file" class="hidden" required onchange="this.form.submit()">
-            <i data-lucide="upload-cloud" class="w-5 h-5 text-slate-400 group-hover:text-blue-600 mb-1 transition-colors duration-150"></i>
-            <span class="text-xs font-bold text-slate-700 group-hover:text-blue-600 transition-colors duration-150">Ingest Patient Study File</span>
+            <i data-lucide="upload-cloud" class="w-5 h-5 text-slate-400 group-hover:text-[#0e7490] mb-1 transition-colors duration-150"></i>
+            <span class="text-xs font-bold text-slate-700 group-hover:text-[#0e7490] transition-colors duration-150">Ingest Patient Study File</span>
             <span class="text-[9px] text-slate-400 mt-0.5">JPEG, PNG, WebP (Max 16MB)</span>
           </label>
         </form>
@@ -179,12 +184,12 @@
           <!-- preset 1: Normal -->
           <form action="/predict" method="POST">
             <input type="hidden" name="sample_name" value="normal">
-            <button type="submit" class="w-full text-left p-3.5 rounded-lg border transition-all duration-150 flex flex-col gap-1.5 border-l-4 {% if prediction and 'normal' in img_path %}border-blue-200 bg-blue-50/20 border-l-blue-600 shadow-sm{% else %}border-slate-200 bg-white hover:bg-slate-50/50 border-l-transparent{% endif %} group">
+            <button type="submit" class="w-full text-left p-3.5 rounded-lg border transition-all duration-150 flex flex-col gap-1.5 border-l-4 {% if prediction and 'normal' in img_path %}border-l-[#0e7490] bg-[#eef8f6]/40 border-[#0e7490]/40 shadow-sm{% else %}border-slate-200 bg-white hover:bg-slate-50/50 border-l-transparent{% endif %} group">
               <div class="flex items-center justify-between w-full font-mono text-[9px] text-slate-400 font-medium">
                 <span>PX-8041A</span>
                 <span class="px-1.5 py-0.2 bg-slate-100 text-slate-500 rounded font-semibold text-[8px]">DX-RAD</span>
               </div>
-              <div class="text-xs font-bold text-slate-800 group-hover:text-blue-600 transition-colors duration-150">Patient: Case Normal</div>
+              <div class="text-xs font-bold text-slate-800 group-hover:text-[#0e7490] transition-colors duration-150">Patient: Case Normal</div>
               <div class="flex items-center justify-between w-full text-[10px] text-slate-500 font-medium">
                 <span>DOB: 1981-11-12</span>
                 <span class="flex items-center gap-1 text-blue-600 font-bold">
@@ -197,12 +202,12 @@
           <!-- preset 2: Pneumonia -->
           <form action="/predict" method="POST">
             <input type="hidden" name="sample_name" value="pneumonia">
-            <button type="submit" class="w-full text-left p-3.5 rounded-lg border transition-all duration-150 flex flex-col gap-1.5 border-l-4 {% if prediction and 'pneumonia' in img_path %}border-blue-200 bg-blue-50/20 border-l-blue-600 shadow-sm{% else %}border-slate-200 bg-white hover:bg-slate-50/50 border-l-transparent{% endif %} group">
+            <button type="submit" class="w-full text-left p-3.5 rounded-lg border transition-all duration-150 flex flex-col gap-1.5 border-l-4 {% if prediction and 'pneumonia' in img_path %}border-l-[#0e7490] bg-[#eef8f6]/40 border-[#0e7490]/40 shadow-sm{% else %}border-slate-200 bg-white hover:bg-slate-50/50 border-l-transparent{% endif %} group">
               <div class="flex items-center justify-between w-full font-mono text-[9px] text-slate-400 font-medium">
                 <span>PX-4752B</span>
                 <span class="px-1.5 py-0.2 bg-slate-100 text-slate-500 rounded font-semibold text-[8px]">DX-RAD</span>
               </div>
-              <div class="text-xs font-bold text-slate-800 group-hover:text-blue-600 transition-colors duration-150">Patient: Case Pneumonia</div>
+              <div class="text-xs font-bold text-slate-800 group-hover:text-[#0e7490] transition-colors duration-150">Patient: Case Pneumonia</div>
               <div class="flex items-center justify-between w-full text-[10px] text-slate-500 font-medium">
                 <span>DOB: 1974-05-18</span>
                 <span class="flex items-center gap-1 text-blue-600 font-bold">
@@ -221,8 +226,8 @@
             <div class="font-bold text-slate-700">Patient: Sarah Jenkins</div>
             <div class="flex justify-between w-full text-[10px] text-slate-400 font-medium">
               <span>DOB: 1993-02-28</span>
-              <span class="flex items-center gap-1 text-pacs-success font-semibold">
-                <span class="w-1.5 h-1.5 rounded-full bg-pacs-success"></span> Completed
+              <span class="flex items-center gap-1 text-green-700 font-semibold">
+                <span class="w-1.5 h-1.5 rounded-full bg-green-600"></span> Completed
               </span>
             </div>
           </div>
@@ -236,30 +241,30 @@
             <div class="font-bold text-slate-700">Patient: Robert Martinez</div>
             <div class="flex justify-between w-full text-[10px] text-slate-400 font-medium">
               <span>DOB: 1968-09-04</span>
-              <span class="flex items-center gap-1 text-pacs-success font-semibold">
-                <span class="w-1.5 h-1.5 rounded-full bg-pacs-success"></span> Completed
+              <span class="flex items-center gap-1 text-green-700 font-semibold">
+                <span class="w-1.5 h-1.5 rounded-full bg-green-600"></span> Completed
               </span>
             </div>
           </div>
 
         </div>
         
-        <!-- Sidebar Footer Stats -->
+        <!-- Stats footer -->
         <div class="p-4 border-t border-slate-100 bg-slate-50 font-mono text-[10px] text-slate-500 flex flex-col gap-1.5">
           <div class="flex justify-between"><span>AI Inference Engine</span><span class="text-slate-800 font-bold">ONNX Runtime (CPU)</span></div>
           <div class="flex justify-between"><span>Verified Accuracy</span><span class="text-blue-600 font-bold">82.05% (512/624)</span></div>
-          <div class="flex justify-between"><span>Mean Latency</span><span class="text-pacs-success font-bold">< 100ms</span></div>
+          <div class="flex justify-between"><span>Mean Latency</span><span class="text-green-700 font-bold">< 100ms</span></div>
         </div>
       </section>
 
-      <!-- COLUMN 3: DIAGNOSTIC IMAGE VIEWER (Center) -->
-      <section class="flex-1 bg-white border border-pacs-border rounded-xl flex flex-col overflow-hidden shadow-sm">
+      <!-- COLUMN 3: DIAGNOSTIC IMAGE VIEWER -->
+      <section class="flex-grow bg-white border border-pacs-border rounded-xl flex flex-col overflow-hidden shadow-sm">
         
         <!-- Viewport Toolbar -->
         <div class="h-12 border-b border-slate-100 px-4 flex items-center justify-between text-xs font-semibold text-slate-600 select-none flex-shrink-0">
           <span>Diagnostic Image Viewer</span>
           
-          <!-- Control Buttons -->
+          <!-- Control Buttons (Standard gray outlines matching mockup) -->
           <div class="flex items-center gap-1.5">
             <button onclick="toggleInvert()" class="px-3 py-1 bg-white hover:bg-slate-50 border border-slate-300 rounded text-slate-700 flex items-center gap-1.5 font-bold transition-all shadow-sm">
               <i data-lucide="eye" class="w-3.5 h-3.5"></i> Invert
@@ -277,21 +282,21 @@
               <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Reset
             </button>
             <div class="h-4 w-px bg-slate-300 mx-1"></div>
-            <button class="p-1 bg-white hover:bg-slate-50 border border-slate-300 rounded text-slate-700 shadow-sm flex items-center justify-center">
+            <button class="p-1.5 bg-white hover:bg-slate-50 border border-slate-300 rounded text-slate-700 shadow-sm flex items-center justify-center">
               <i data-lucide="more-vertical" class="w-4 h-4"></i>
             </button>
           </div>
         </div>
 
-        <!-- Black Canvas Screen Area -->
-        <div class="flex-grow bg-black flex items-center justify-center p-6 relative overflow-hidden">
+        <!-- Black Canvas Viewport Area -->
+        <div class="flex-grow bg-[#090b10] flex items-center justify-center p-6 relative overflow-hidden">
           
           {% if prediction %}
-            <div class="relative w-full h-full max-w-[480px] max-h-[480px] bg-black flex items-center justify-center border border-slate-900">
-              <img id="viewport-image" src="{{ img_path }}" class="pacs-image max-w-full max-h-full object-contain" alt="Grayscale scan">
+            <div class="relative w-full h-full max-w-[480px] max-h-[480px] bg-black flex items-center justify-center border border-slate-900 shadow-2xl">
+              <img id="viewport-image" src="{{ img_path }}" class="pacs-image max-w-full max-h-full object-contain" alt="Radiograph scan">
               
-              <!-- Corner HUD indicators (DICOM Overlays) -->
-              <div id="dicom-overlays" class="absolute inset-0 p-4 font-mono text-[10px] text-cyan-400 tracking-tight pointer-events-none flex flex-col justify-between z-10">
+              <!-- Corner HUD text overlays -->
+              <div id="dicom-overlays" class="absolute inset-0 p-4 font-mono text-[10px] text-cyan-400 opacity-90 tracking-tight pointer-events-none flex flex-col justify-between z-10">
                 <!-- Upper corner values -->
                 <div class="flex justify-between w-full">
                   <div>
@@ -340,7 +345,7 @@
 
       </section>
 
-      <!-- COLUMN 4: AI REPORT & DOCUMENTATION (Right side) -->
+      <!-- COLUMN 4: AI REPORT & DOCUMENTATION -->
       <section class="w-[360px] bg-white border border-pacs-border rounded-xl flex flex-col overflow-hidden shadow-sm flex-shrink-0">
         
         <!-- Header -->
@@ -350,7 +355,7 @@
 
         <div class="flex-grow overflow-y-auto flex flex-col">
           
-          <!-- Card 1: Screening Outcome -->
+          <!-- Card 1: AI Outcome -->
           <div class="p-5 border-b border-slate-100 flex flex-col gap-4">
             <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wide">1. Neural Network Screening Outcome</h3>
             
@@ -370,10 +375,10 @@
                   </div>
                 </div>
 
-                <!-- Green/Red check/warning pill box matching mock exactly -->
-                <div class="rounded-xl border p-3.5 flex items-start gap-3 {% if prediction == 'NORMAL' %}bg-pacs-successBg/40 border-pacs-successBorder text-pacs-success{% else %}bg-pacs-errorBg/40 border-pacs-errorBorder text-pacs-error{% endif %}">
+                <!-- Green/Red check/warning pill box -->
+                <div class="rounded-xl border p-3.5 flex items-start gap-3 {% if prediction == 'NORMAL' %}bg-pacs-successBg border-pacs-successBorder text-pacs-success{% else %}bg-pacs-errorBg border-pacs-errorBorder text-pacs-error{% endif %}">
                   <div class="p-1 rounded-full bg-white flex items-center justify-center flex-shrink-0 shadow-sm">
-                    <i data-lucide="{% if prediction == 'NORMAL' %}check-circle-2{% else %}alert-triangle{% endif %}" class="w-4 h-4"></i>
+                    <i data-lucide="{% if prediction == 'NORMAL' %}check-circle-2{% else %}alert-triangle{% endif %}" class="w-4 h-4 text-inherit"></i>
                   </div>
                   <div class="flex flex-col">
                     <span class="text-xs font-bold text-slate-800">
@@ -397,39 +402,40 @@
             {% endif %}
           </div>
 
-          <!-- Card 2: Report Form -->
+          <!-- Card 2: Report Generation (Previewable inline & Downloadable as attachment) -->
           <div class="p-5 flex flex-col gap-4 flex-grow">
             <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wide">2. Generate Case Report PDF</h3>
             
             {% if prediction %}
-              <form action="/generate_report" method="POST" class="flex flex-col gap-3.5">
+              <form id="report-form" action="/generate_report" method="POST" class="flex flex-col gap-3.5">
                 <input type="hidden" name="prediction" value="{{ prediction }}">
                 <input type="hidden" name="confidence" value="{{ confidence }}">
                 <input type="hidden" name="img_path" value="{{ img_path }}">
+                <input type="hidden" id="preview-input" name="preview" value="false">
 
                 <div>
                   <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Patient Name</label>
-                  <input type="text" name="patient_name" placeholder="John Doe" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 font-semibold shadow-sm transition-all">
+                  <input type="text" name="patient_name" placeholder="John Doe" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all">
                 </div>
 
                 <div>
                   <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Patient Age</label>
-                  <input type="text" name="patient_age" placeholder="45" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 font-semibold shadow-sm transition-all">
+                  <input type="text" name="patient_age" placeholder="45" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all">
                 </div>
 
                 <div>
                   <label class="text-[9px] font-bold text-slate-500 uppercase tracking-wide block mb-1">Clinician Findings</label>
-                  <textarea name="notes" rows="4" placeholder="Enter diagnostic observations (e.g. no focal consolidations visible / signs of pneumonia)" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500 font-semibold shadow-sm transition-all resize-none leading-relaxed"></textarea>
+                  <textarea name="notes" rows="4" placeholder="Enter diagnostic observations (e.g. no focal consolidations visible / signs of pneumonia)" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-[#0e7490] font-semibold shadow-sm transition-all resize-none leading-relaxed"></textarea>
                 </div>
 
-                <!-- Side-by-Side buttons matching mockup -->
+                <!-- Side-by-Side buttons -->
                 <div class="grid grid-cols-2 gap-3 mt-1">
-                  <!-- Preview Report: White button, blue border/text -->
-                  <button type="submit" name="preview" value="true" class="py-2.5 bg-white hover:bg-slate-50 text-blue-700 border border-blue-600 hover:border-blue-700 font-bold rounded-lg text-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm">
-                    <i data-lucide="download" class="w-4 h-4"></i> Preview Report
+                  <!-- Preview Report: White button, teal border/text -->
+                  <button type="submit" onclick="submitForm('preview')" class="py-2.5 bg-white hover:bg-slate-50 text-[#0e7490] border border-[#0e7490] font-bold rounded-lg text-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm">
+                    <i data-lucide="eye" class="w-4 h-4"></i> Preview Report
                   </button>
-                  <!-- Generate PDF: Solid blue button, white text -->
-                  <button type="submit" class="py-2.5 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded-lg text-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm border border-blue-800">
+                  <!-- Generate PDF: Solid teal button, white text -->
+                  <button type="submit" onclick="submitForm('download')" class="py-2.5 bg-[#0e7490] hover:bg-[#0c5d73] text-white font-bold rounded-lg text-xs transition-colors flex items-center justify-center gap-1.5 shadow-sm border border-[#0c5d73]">
                     <i data-lucide="file-text" class="w-4 h-4"></i> Generate PDF Report
                   </button>
                 </div>
@@ -444,7 +450,7 @@
         </div>
 
         <!-- Lower Alert Banner -->
-        <div class="m-4 p-3 bg-blue-50 border border-blue-100 rounded-lg flex items-start gap-2.5 text-[10px] text-blue-800 leading-normal flex-shrink-0">
+        <div class="m-4 p-3 bg-blue-50 border border-blue-100 rounded-lg flex items-start gap-2.5 text-[10px] text-blue-850 leading-normal flex-shrink-0">
           <i data-lucide="info" class="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5"></i>
           <div>
             AI analysis is for screening assistance only.<br>
@@ -461,6 +467,21 @@
   <script>
     // Initialize Lucide icons
     lucide.createIcons();
+
+    // Toggle Form Target for Preview vs Download
+    function submitForm(mode) {
+      const form = document.getElementById('report-form');
+      const previewInput = document.getElementById('preview-input');
+      if (form && previewInput) {
+        if (mode === 'preview') {
+          previewInput.value = 'true';
+          form.target = '_blank';
+        } else {
+          previewInput.value = 'false';
+          form.target = '_self';
+        }
+      }
+    }
 
     // Image Manipulation States
     let isInverted = false;

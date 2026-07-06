@@ -172,7 +172,7 @@ def predict():
 
 @app.route("/generate_report", methods=["POST"])
 def generate_report():
-    """Generates a downloadable clinical PDF report for the patient case"""
+    """Generates a downloadable or previewable clinical PDF report for the patient case"""
     try:
         patient_name = request.form.get("patient_name", "Anonymous Patient").strip()
         patient_age = request.form.get("patient_age", "N/A").strip()
@@ -180,6 +180,7 @@ def generate_report():
         prediction = request.form.get("prediction", "UNKNOWN")
         confidence = request.form.get("confidence", "0.00%")
         img_path = request.form.get("img_path", "")
+        preview_mode = request.form.get("preview") == "true"
 
         # Format patient info safely
         if not patient_name:
@@ -306,7 +307,7 @@ def generate_report():
         
         return send_file(
             report_filepath,
-            as_attachment=True,
+            as_attachment=(not preview_mode),
             download_name=report_filename,
             mimetype="application/pdf"
         )
